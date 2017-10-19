@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>NullFX.CRC</AssemblyName>
+    <Description>A collection of common CRC algorithms implemented in .NET</Description>
+    <Copyright>2006 Steve Whitley</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
+    <Authors>Steve Whitley</Authors>
+    <Company>NullFX Software</Company>
+    <PackageTags>CRC8 CRC16 CRC32</PackageTags>
+  </PropertyGroup>
+
+</Project>
