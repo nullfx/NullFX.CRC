@@ -18,6 +18,7 @@ namespace NullFX.CRC.Tests {
         public void Crc16StandardValidation ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.Standard, TestBuffer ), Crc16Crc );
         }
+
         [TestMethod]
         public void Crc16StandardSegmentValidation ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.Standard, ExtendedTestBuffer, 3, 11  ), Crc16Crc );
