@@ -5,4 +5,3 @@ dist: trusty
 dotnet: 2.0.0
 script:
  - dotnet restore
- - xbuild /p:Configuration=Release NullFX.CRC.sln
