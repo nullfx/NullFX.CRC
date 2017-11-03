@@ -1,2 +1,6 @@
 language: csharp
 solution: NullFX.CRC.sln
+install:
+  - nuget restore NullFX.CRC.sln
+script:
+  - xbuild /p:Configuration=Release solution-name.sln
