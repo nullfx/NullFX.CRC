@@ -5,4 +5,4 @@ dotnet: 2.0.0
 install:
    - dotnet restore
 script:
-   - dotnet build NullFX.Crc/NullFX.Crc.csproj
+   - dotnet build NullFX.CRC/NullFX.Crc.csproj
