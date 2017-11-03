@@ -3,8 +3,6 @@ mono: none
 solution: NullFX.CRC.sln
 dist: trusty
 dotnet: 2.0.0
-install:
-  - nuget restore NullFX.CRC.sln
 script:
  - dotnet restore
  - xbuild /p:Configuration=Release NullFX.CRC.sln
