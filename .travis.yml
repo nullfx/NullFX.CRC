@@ -1,2 +1,6 @@
 language: csharp
+<<<<<<< Updated upstream
 solution: NullFX.CRC.sln
+=======
+solution: NullFX.CRC.sln
+>>>>>>> Stashed changes
