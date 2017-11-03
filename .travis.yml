@@ -1,8 +1,8 @@
 language: csharp
-mono:
-  - latest
+mono: none
 solution: NullFX.CRC.sln
 dist: trusty
+dotnet: 2.0.0
 install:
   - nuget restore NullFX.CRC.sln
 script:
