@@ -1,4 +1,6 @@
 language: csharp
+mono:
+  - latest
 solution: NullFX.CRC.sln
 dist: trusty
 install:
