@@ -1,4 +1,7 @@
 language: csharp
 solution: NullFX.CRC.sln
+dist: trusty
 install:
   - nuget restore NullFX.CRC.sln
+script:
+ - dotnet restore
