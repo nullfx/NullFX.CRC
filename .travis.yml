@@ -4,6 +4,3 @@ install:
   - nuget restore NullFX.CRC.sln
 script:
   - xbuild /p:Configuration=Release solution-name.sln
-matrix:
-  include:
-    - dotnet: 2.0.0
