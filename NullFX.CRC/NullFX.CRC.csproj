@@ -7,7 +7,6 @@
     <Copyright>2006 Steve Whitley</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
     <Authors>Steve Whitley</Authors>
     <Company>NullFX Software</Company>
     <PackageTags>CRC8 CRC16 CRC32</PackageTags>
