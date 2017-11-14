@@ -14,4 +14,8 @@
     <RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>
