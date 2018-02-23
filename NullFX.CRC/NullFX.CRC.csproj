@@ -12,6 +12,10 @@
     <PackageTags>CRC8 CRC16 CRC32</PackageTags>
     <PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
+    <PackageVersion>1.0.1</PackageVersion>
+    <Owners>Steve Whitley</Owners>
+    <Summary>A collection of common CRC algorithms implemented in .NET</Summary>
+    <Title>NullFX CRC</Title>
   </PropertyGroup>
 
   <ItemGroup>
