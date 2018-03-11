@@ -5,4 +5,6 @@ NullFX CRC is a small set of CRC utilities written in native C# released under t
 [Nuget Package Page](https://www.nuget.org/packages/NullFX.CRC/)
 
 ## Install
+```ps
 PM> Install-Package NullFX.CRC
+```
