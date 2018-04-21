@@ -13,7 +13,7 @@ PM> Install-Package NullFX.CRC
 ## Examples:
 Each CRC library uses a common ComputeChecksum format. It accepts a byte array which can be computed by converting text / numbers / structures etc into an array, then passing it into ComputeChecksum for it's CRC.
 
-```c
+```java
 // using text
 var text = "I am string content";
 // convert text to a byte array
