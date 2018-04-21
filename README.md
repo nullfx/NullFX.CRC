@@ -13,7 +13,7 @@ PM> Install-Package NullFX.CRC
 ## Examples:
 Each CRC library uses a common ComputeChecksum format. It accepts a byte array which can be computed by converting text / numbers / structures etc into an array, then passing it into ComputeChecksum for it's CRC.
 
-```cs
+```c
 // using text
 var text = "I am string content";
 // convert text to a byte array
@@ -45,3 +45,10 @@ var segmentedBytesCrc = NullFX.CRC.Crc32.ComputeChecksum ( bytes, 2, 4 );
 Console.WriteLine ( "Segment of bytes CRC: {0:X8}", segmentedBytesCrc );
 ```
 
+### output:
+```
+Text CRC: 3AD00FD2
+Number CRC: 1A5A601F
+Random bytes CRC: B63CFBCD
+Segment of bytes CRC: A0EC895E
+```
