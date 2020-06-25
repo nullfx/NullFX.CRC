@@ -16,7 +16,15 @@
     <Owners>Steve Whitley</Owners>
     <Summary>A collection of common CRC algorithms implemented in .NET</Summary>
     <Title>NullFX CRC</Title>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <Folder Include="Properties\" />
