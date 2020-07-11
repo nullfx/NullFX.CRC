@@ -1,13 +1,7 @@
 language: csharp
-dist: xenial
+dist: trusty
 mono: none
-dotnet: 3.1
-
-addons:
-  sonarcloud:
-    organization: "nullfx"
-    token:
-      secure: "tveTAEeXTglw631HGICZeWp4G+s0SMvuC37LQrCuvl8ciCm8STsRWv0yq6kOcF6bF4gzuXff1TPhWue8Eu6Xdp99iAG+oXE6njwxRlMFAJbViTyQ/0I5JqulEIOwshfKOA/yCmxSbKttr1rmr3UqPCk7A4mAYFX8N6+aIM1hR1STlOAsBxV8m3Xo1KlikM43bjQG1clegMn8PdRPg2HX1a9OyF15eLMARVXdLiPo80DoXiBoDZr+xzKYwDYIWL+041qylOHjUP7I2WLIXbtCLY0+P1meV9aOATnf9pMX1lTSrZEmw4oIT1PHwZeONhkd26kqFurn22G76m3QhDotlbldhMX4qX+YA9tbXvH6kejSQSVzdbniBGYBlQitcqKBQ1O0O3DGv3Fviy84O8LozQSRTuA4S+InTgakfxVEO8rWm4dOzPLjoElUQCmoK1YtPNfIibQbgNPg86eilly3muF4n9IqpsCsXYfmK5HW6vax3NXKlTIgpZVj0TPEwoCka+wakdKFkix2qcwRY1htvRt8BUfkmMOruyk4C8HRcY2YyYGkTLRWl+oahUAOb3KEIspZ6kkBy0WQ5yfKYsc4vMMvAhDbkxOv/CB5Zj+IPR7q9bN6nfmK3aMrAJAEmKTt1Vf4LB2bxN7E9Z3hW4KRzO70yAAo1YhRGaH5aiqDNW8="
+dotnet: 2.0.0
 
 install:
    - dotnet restore
@@ -15,4 +9,3 @@ install:
 script:
    - dotnet build NullFX.CRC/NullFX.CRC.csproj
    - dotnet test NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
-   - sonar-scanner
