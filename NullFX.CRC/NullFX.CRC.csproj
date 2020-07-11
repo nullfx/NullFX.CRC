@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>NullFX.CRC</AssemblyName>
-    <Description>A collection of common CRC algorithms implemented in .NET</Description>
-    <Copyright>2006 Steve Whitley</Copyright>
+    <Description>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Description>
+    <Copyright>2020 Steve Whitley</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Steve Whitley</Authors>
@@ -12,13 +12,15 @@
     <PackageTags>CRC8 CRC16 CRC32</PackageTags>
     <PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <Owners>Steve Whitley</Owners>
-    <Summary>A collection of common CRC algorithms implemented in .NET</Summary>
+    <Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License A collection of common CRC algorithms implemented in .NET</Summary>
     <Title>NullFX CRC</Title>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackOnBuild>true</PackOnBuild>
+    <ReleaseVersion>1.1.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>

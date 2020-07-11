@@ -4,6 +4,12 @@ mono: none
 dotnet: 2.0.0
 install:
    - dotnet restore
+addons:
+  sonarcloud:
+    organization: "nullfx"
+    token:
+      secure: "5743eb70e5e1bd301b9bd89b110941348ab48a88"
 script:
    - dotnet build NullFX.CRC/NullFX.CRC.csproj
    - dotnet test NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
+   - sonar-scanner
