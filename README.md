@@ -1,4 +1,4 @@
-# NullFX CRC [![Build Status](https://travis-ci.org/nullfx/NullFX.CRC.svg?branch=master)](https://travis-ci.org/nullfx/NullFX.CRC)
+# NullFX CRC [![Build Status](https://travis-ci.org/nullfx/NullFX.CRC.svg?branch=master)](https://travis-ci.org/nullfx/NullFX.CRC) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nullfx_NullFX.CRC&metric=alert_status)](https://sonarcloud.io/dashboard?id=nullfx_NullFX.CRC)
 NullFX CRC is a small set of CRC utilities written in native C# released under the MIT License
 
 ## Nuget:
