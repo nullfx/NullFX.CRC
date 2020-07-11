@@ -13,6 +13,6 @@ install:
    - dotnet restore
 
 script:
+   - sonar-scanner
    - dotnet build NullFX.CRC/NullFX.CRC.csproj
    - dotnet test NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
-   - sonar-scanner
