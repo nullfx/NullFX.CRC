@@ -8,7 +8,7 @@ addons:
   sonarcloud:
     organization: "nullfx"
     token:
-      secure: "5743eb70e5e1bd301b9bd89b110941348ab48a88"
+      secure: "GQJLbZ8oT5iBGpJM4v85fw2b4J3dnfG+Eca7NRB89AFpGkmewh990tP9wSoaQ+0cyc9mF8gpgzC6dz3F+JfkOtXVldMyrimEKJSpO7a1V8LTbbxbIGQOMVL3Smfc4ekGEWw7WWpmV4I9SmTpMoegpWl5O/A/aAvaz2L9OfsrIHWggnpbNJerZHwCrFicVoF46svrvi1R2H6mSh1eylsXOhP31lIwlqpUORlyrW1hoFI9/DjChp5kaeJFLqAzjP1D3eNYvO/mChVTWG1KJAI7K5bZYG/0chL8poSCwZaXsWO1HCrMxIYfFlfPpPehOCoCQe8S9sy57rzwLO1WN5R6D03Q8Jna7dLR0T6+BxqBcb8sEKDXT/f/h19tL7jE4s6Yt6d/zL7ew7qdMWOEDmPXgsxsWhjmfrSmxFBHjV3h14Cc7J+Zz2JuTcId2NWCPwjK5WXJOeD08ccKMusFuG+pk8Td6wAyAv8RcH3Pusc2MKhuvFZivfGh+GxmFD8EL8cyf85Fb/Ex/bY96XffLIX+/sD4x3mSOdzrPmm5Wd/DxnzTxYG+Wi9UZIu+sjuS5y+//UKDKFoIyUMUq1IAO324tkq1GQDpbRegdevz48t5dRZ64zZDM9wNi/HZBvDu8ap5FG44pxsMGU/M8Q0DhYQeHslPQaIH1Q/K1o1mm/W031w="
 script:
    - dotnet build NullFX.CRC/NullFX.CRC.csproj
    - dotnet test NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
