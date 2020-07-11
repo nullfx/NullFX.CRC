@@ -19,7 +19,6 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackOnBuild>true</PackOnBuild>
     <ReleaseVersion>1.1.0</ReleaseVersion>
   </PropertyGroup>
 
