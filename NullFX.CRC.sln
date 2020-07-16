@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15 
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC", "NullFX.Crc\NullFX.CRC.csproj", "{397FED63-D92E-4373-8DCE-3DAC62AEA656}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC", "NullFX.CRC/NullFX.CRC.csproj", "{397FED63-D92E-4373-8DCE-3DAC62AEA656}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC.Tests", "NullFX.CRC.Tests\NullFX.CRC.Tests.csproj", "{330036FA-2257-41F2-8B9C-0713FFD1880A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC.Tests", "NullFX.CRC.Tests/NullFX.CRC.Tests.csproj", "{330036FA-2257-41F2-8B9C-0713FFD1880A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{124147BD-9EE1-4469-AF35-834E7B19CB1C}"
 	ProjectSection(SolutionItems) = preProject
