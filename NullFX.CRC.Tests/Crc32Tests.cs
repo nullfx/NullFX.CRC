@@ -44,7 +44,7 @@ namespace NullFX.CRC.Tests {
             Assert.AreEqual ( Crc32.ComputeChecksum ( ExtendedTestBuffer, 3, 11 ), Crc32Crc );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc32SegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc32.ComputeChecksum ( ExtendedTestBuffer, 9, 5 ), Crc32StartLessThanLength );
         }

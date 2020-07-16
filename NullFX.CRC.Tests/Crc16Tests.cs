@@ -87,32 +87,32 @@ namespace NullFX.CRC.Tests {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.CcittInitialValue0xFFFF, TestBuffer ), CrcCcittFCrc );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16StandardSegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.Standard, ExtendedTestBuffer, 9, 5 ), Crc16Standard_StartLessThanLength );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16DnpSegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.Dnp, ExtendedTestBuffer, 9, 5 ), Crc16Dnp_StartLessThanLength );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16CcittKermitSegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.CcittKermit, ExtendedTestBuffer, 9, 5 ), Crc16CcittKermit_StartLessThanLength );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16CcittSegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.Ccitt, ExtendedTestBuffer, 9, 5 ), Crc16Ccitt_StartLessThanLength );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16Ccitt1D04SegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.CcittInitialValue0x1D0F, ExtendedTestBuffer, 9, 5 ), Crc16Ccitt1D04_StartLessThanLength );
         }
 
-        [TestMethod]
+        [TestMethod] // tests for bug fix where start < length returning crc = 0
         public void Crc16CcittFfffSegmentValidation_StartLessThanLength ( ) {
             Assert.AreEqual ( Crc16.ComputeChecksum ( Crc16Algorithm.CcittInitialValue0xFFFF, ExtendedTestBuffer, 9, 5 ), Crc16CcittFfff_StartLessThanLength );
         }
