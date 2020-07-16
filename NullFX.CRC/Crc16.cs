@@ -54,12 +54,15 @@ namespace NullFX.CRC {
             /// <param name="length">The length of the buffer upon which to compute the CRC</param>
             /// <returns>The specified CRC</returns>
             internal static ushort ComputeChecksum ( byte[] bytes, int start, int length ) {
+                if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+                if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+                if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
                 var crc = InitialValue;
                 var end = start + length;
-                if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                    for ( int i = start; i < end; ++i ) {
-                        crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
-                    }
+                for ( int i = start; i < end; ++i ) {
+                    crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc;
             }
@@ -89,12 +92,15 @@ namespace NullFX.CRC {
             /// <param name="length">The length of the buffer upon which to compute the CRC</param>
             /// <returns>The specified CRC</returns>
             internal static ushort ComputeChecksum ( byte[] bytes, int start, int length ) {
+                if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+                if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+                if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
                 var crc = InitialValue;
                 var end = start + length;
-                if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                    for ( int i = start; i < end; ++i ) {
-                        crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
-                    }
+                for ( int i = start; i < end; ++i ) {
+                    crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc.ByteSwapCompliment ( );
             }
@@ -124,12 +130,15 @@ namespace NullFX.CRC {
             /// <param name="length">The length of the buffer upon which to compute the CRC</param>
             /// <returns>The specified CRC</returns>
             internal static ushort ComputeChecksum ( byte[] bytes, int start, int length ) {
+                if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+                if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+                if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
                 var crc = InitialValue;
                 var end = start + length;
-                if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                    for ( int i = start; i < end; ++i ) {
-                        crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
-                    }
+                for ( int i = start; i < end; ++i ) {
+                    crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc.ByteSwap ( );
             }
@@ -200,7 +209,7 @@ namespace NullFX.CRC {
             public static ushort ComputeChecksum ( params byte[] bytes ) {
                 return CrcCcittBase.ComputeChecksum ( InitialValue, bytes );
             }
-            
+
             /// <summary>
             /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0x1D0F
             /// </summary>
@@ -221,12 +230,15 @@ namespace NullFX.CRC {
                 return ComputeChecksum ( initialValue, bytes, 0, bytes?.Length ?? 0 );
             }
             internal static ushort ComputeChecksum ( ushort initialValue, byte[] bytes, int start, int length ) {
+                if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+                if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+                if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
                 var crc = initialValue;
                 var end = start + length;
-                if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                    for ( int i = start; i < end; ++i ) {
-                        crc = ( ushort )( ( crc << 8 ) ^ Table[( ( crc >> 8 ) ^ ( 0xff & bytes[i] ) )] );
-                    }
+                for ( int i = start; i < end; ++i ) {
+                    crc = ( ushort )( ( crc << 8 ) ^ Table[( ( crc >> 8 ) ^ ( 0xff & bytes[i] ) )] );
                 }
                 return crc;
             }
@@ -252,14 +264,20 @@ namespace NullFX.CRC {
         /// <returns>The specified CRC</returns>
         public static ushort ComputeChecksum ( Crc16Algorithm algorithm, byte[] bytes, int start, int length ) {
             switch ( algorithm ) {
-                case Crc16Algorithm.Standard: return Standard.ComputeChecksum ( bytes, start, length );
-                case Crc16Algorithm.Ccitt: return CcittInitialZero.ComputeChecksum ( bytes, start, length );
-                case Crc16Algorithm.CcittKermit: return CcittKermit.ComputeChecksum ( bytes, start, length );
-                case Crc16Algorithm.CcittInitialValue0xFFFF: return CcittInitial0xFFFF.ComputeChecksum ( bytes, start, length );
-                case Crc16Algorithm.CcittInitialValue0x1D0F: return CcittInitial0x1D0F.ComputeChecksum ( bytes, start, length );
-                case Crc16Algorithm.Dnp: return Dnp.ComputeChecksum ( bytes );
+                case Crc16Algorithm.Standard:
+                return Standard.ComputeChecksum ( bytes, start, length );
+                case Crc16Algorithm.Ccitt:
+                return CcittInitialZero.ComputeChecksum ( bytes, start, length );
+                case Crc16Algorithm.CcittKermit:
+                return CcittKermit.ComputeChecksum ( bytes, start, length );
+                case Crc16Algorithm.CcittInitialValue0xFFFF:
+                return CcittInitial0xFFFF.ComputeChecksum ( bytes, start, length );
+                case Crc16Algorithm.CcittInitialValue0x1D0F:
+                return CcittInitial0x1D0F.ComputeChecksum ( bytes, start, length );
+                case Crc16Algorithm.Dnp:
+                return Dnp.ComputeChecksum ( bytes );
             }
-            throw new UnknownAlgorithmException("Unknown Algorithm");
+            throw new UnknownAlgorithmException ( "Unknown Algorithm" );
         }
     }
 }

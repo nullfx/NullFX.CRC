@@ -24,6 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace NullFX.CRC {
     /// <summary>
     /// A CRC 8 Utility using x^8 + x^7 + x^6 + x^4 + x^2 + 1
@@ -48,12 +50,15 @@ namespace NullFX.CRC {
         /// <param name="length">The length of the buffer upon which to compute the CRC</param>
         /// <returns>The specified CRC</returns>
         public static byte ComputeChecksum ( byte[] bytes, int start, int length ) {
+            if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+            if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+            if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+            if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+            if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
             var crc = InitialValue;
             var end = start + length;
-            if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                for ( int i = start; i < end; ++i ) {
-                    crc = table[crc ^ bytes[i]];
-                }
+            for ( int i = start; i < end; ++i ) {
+                crc = table[crc ^ bytes[i]];
             }
             return crc;
         }
