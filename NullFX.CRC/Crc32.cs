@@ -24,6 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace NullFX.CRC {
     /// <summary>
     /// A CRC 32 Utility using reversed x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1 (0xEDB88320) polynomial
@@ -49,12 +51,15 @@ namespace NullFX.CRC {
         /// <param name="start">The start index upon which to compute the CRC</param>
         /// <returns>The specified CRC</returns>
         public static uint ComputeChecksum( byte[] bytes, int start, int length ) {
+            if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
+            if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+            if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
+            if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+            if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
             var crc = InitialValue;
             var end = start + length;
-            if ( bytes != null && bytes.Length > 0 && start < length && end <= bytes.Length ) {
-                for ( int i = start; i < end; ++i ) {
-                    crc = ( uint )( ( crc >> 8 ) ^ table[( byte )( ( ( crc ) & 0xff ) ^ bytes[i] )] );
-                }
+            for ( int i = start; i < end; ++i ) {
+                crc = ( uint )( ( crc >> 8 ) ^ table[( byte )( ( ( crc ) & 0xff ) ^ bytes[i] )] );
             }
             return ~crc;
         }
