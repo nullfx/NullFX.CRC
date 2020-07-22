@@ -4,7 +4,7 @@ NullFX CRC is a small set of CRC utilities written in native C# released under t
 ## Nuget:
 [Nuget Package Page](https://github.com/nullfx/NullFX.CRC/packages)
 
-Disappointingly I've stopped publishing this package on nuget.org.  Between v1.0.1 and v1.1.0 release they switched to microsoft accounts and I've lost my ability to log in to my account there, and my link to this package on that website to update packages there. Dispite sending multiple emails (which they state is the only way to reclaim your feed) I've had no response, so sadly, so i'll maintain the updated library feed here...
+Disappointingly, I've stopped publishing this package on `nuget.org`.  Between versions 1.0.1 and v1.1.0 of this library  `nuget.org` switched account management to microsoft accounts orphaning my nuget package on their website with no ability for me to recover it or log in and update it. Dispite sending multiple emails (which they state is the only way to reclaim my package) I've had no response from `Microsoft Support` (surprise) so sadly, so i'll simply maintain the updated library feed here...
 
 
 ## Install
