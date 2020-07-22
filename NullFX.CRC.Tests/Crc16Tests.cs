@@ -40,7 +40,7 @@ namespace NullFX.CRC.Tests {
         static ushort CrcCcittFCrc = 0xF7B6;
 
         static ushort Crc16Standard_StartLessThanLength = 0x29D8;
-        static ushort Crc16Dnp_StartLessThanLength = 0xF23F;
+        static ushort Crc16Dnp_StartLessThanLength = 0x9B9A;
         static ushort Crc16CcittKermit_StartLessThanLength = 0x3579;
         static ushort Crc16Ccitt_StartLessThanLength = 0xC35B;
         static ushort Crc16Ccitt1D04_StartLessThanLength = 0x3295;

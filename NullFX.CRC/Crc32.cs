@@ -54,11 +54,12 @@ namespace NullFX.CRC {
             if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
             if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
             if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
-            if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
-            if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+            if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
             var crc = InitialValue;
-            var end = start + length;
-            for ( int i = start; i < end; ++i ) {
+            var end = start + length - 1;
+            if ( end > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+            if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+            for ( int i = start; i <= end; ++i ) {
                 crc = ( uint )( ( crc >> 8 ) ^ table[( byte )( ( ( crc ) & 0xff ) ^ bytes[i] )] );
             }
             return ~crc;
