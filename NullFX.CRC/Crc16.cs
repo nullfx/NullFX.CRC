@@ -57,11 +57,12 @@ namespace NullFX.CRC {
                 if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
                 if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
                 if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
-                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
-                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
                 var crc = InitialValue;
-                var end = start + length;
-                for ( int i = start; i < end; ++i ) {
+                var end = start + length - 1;
+                if ( end > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                for ( int i = start; i <= end; ++i ) {
                     crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc;
@@ -95,11 +96,12 @@ namespace NullFX.CRC {
                 if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
                 if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
                 if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
-                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
-                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
                 var crc = InitialValue;
-                var end = start + length;
-                for ( int i = start; i < end; ++i ) {
+                var end = start + length - 1;
+                if ( end > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                for ( int i = start; i <= end; ++i ) {
                     crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc.ByteSwapCompliment ( );
@@ -133,11 +135,12 @@ namespace NullFX.CRC {
                 if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
                 if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
                 if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
-                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
-                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
                 var crc = InitialValue;
-                var end = start + length;
-                for ( int i = start; i < end; ++i ) {
+                var end = start + length - 1;
+                if ( end > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                for ( int i = start; i <= end; ++i ) {
                     crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
                 }
                 return crc.ByteSwap ( );
@@ -233,11 +236,12 @@ namespace NullFX.CRC {
                 if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
                 if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
                 if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
-                if ( start + length > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
-                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
                 var crc = initialValue;
-                var end = start + length;
-                for ( int i = start; i < end; ++i ) {
+                var end = start + length - 1;
+                if ( end > bytes.Length ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                if ( length < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( length ) ); }
+                for ( int i = start; i <= end; ++i ) {
                     crc = ( ushort )( ( crc << 8 ) ^ Table[( ( crc >> 8 ) ^ ( 0xff & bytes[i] ) )] );
                 }
                 return crc;
@@ -275,7 +279,7 @@ namespace NullFX.CRC {
                 case Crc16Algorithm.CcittInitialValue0x1D0F:
                 return CcittInitial0x1D0F.ComputeChecksum ( bytes, start, length );
                 case Crc16Algorithm.Dnp:
-                return Dnp.ComputeChecksum ( bytes );
+                return Dnp.ComputeChecksum ( bytes, start, length );
             }
             throw new UnknownAlgorithmException ( "Unknown Algorithm" );
         }

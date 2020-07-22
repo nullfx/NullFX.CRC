@@ -12,17 +12,17 @@
     <PackageTags>CRC8 CRC16 CRC32</PackageTags>
     <PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
-    <PackageVersion>1.1.0</PackageVersion>
+    <PackageVersion>1.1.1</PackageVersion>
     <Owners>Steve Whitley</Owners>
-    <Summary>A collection of common CRC algorithms implemented in .NET</Summary>
+    <Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
     <Title>NullFX CRC</Title>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
