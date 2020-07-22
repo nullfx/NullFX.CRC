@@ -8,8 +8,8 @@ Disappointingly I've stopped publishing this package on nuget.org.  Between v1.0
 
 
 ## Install
-```ps
-PM> Install-Package NullFX.CRC
+```sh
+dotnet add PROJECT package NullFX.CRC --version 1.1.1
 ```
 
 ## Examples:
