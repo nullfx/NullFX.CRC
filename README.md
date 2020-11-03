@@ -1,11 +1,10 @@
 # NullFX CRC [![Build Status](https://travis-ci.org/nullfx/NullFX.CRC.svg?branch=master)](https://travis-ci.org/nullfx/NullFX.CRC) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nullfx_NullFX.CRC&metric=alert_status)](https://sonarcloud.io/dashboard?id=nullfx_NullFX.CRC)
 NullFX CRC is a small set of CRC utilities written in native C# released under the MIT License
 
-## Nuget:
-[Nuget Package Page](https://github.com/nullfx/NullFX.CRC/packages)
+## NuGet:
+[GitHub Package Page](https://github.com/nullfx/NullFX.CRC/packages)
 
-Disappointingly, I've stopped publishing this package on `nuget.org`.  Between versions 1.0.1 and v1.1.0 of this library  `nuget.org` switched account management to microsoft accounts orphaning my nuget package on their website with no ability for me to recover it or log in and update it. Dispite sending multiple emails (which they state is the only way to reclaim my package) I've had no response from `Microsoft Support` (surprise) so sadly, so i'll simply maintain the updated library feed here...
-
+[NuGet.org Package Page](https://www.nuget.org/packages/NullFX.CRC)
 
 ## Install
 ```sh
