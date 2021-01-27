@@ -153,7 +153,7 @@ namespace NullFX.CRC {
         internal static class CcittInitialZero {
             internal static ushort InitialValue = ushort.MinValue;
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0
             /// </summary>
             /// <param name="bytes">bytes to crc</param>
             /// <returns>the CRC 16 CCITT of the provided bytes</returns>
@@ -162,7 +162,7 @@ namespace NullFX.CRC {
             }
 
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0
             /// </summary>
             /// <param name="bytes">The buffer to compute the CRC upon</param>
             /// <param name="start">The start index upon which to compute the CRC</param>
@@ -174,12 +174,12 @@ namespace NullFX.CRC {
         }
 
         /// <summary>
-        /// A CRC 16 CCITT Utility using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0xffff
+        /// A CRC 16 CCITT Utility using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0xFFFF
         /// </summary>
         internal static class CcittInitial0xFFFF {
             internal static ushort InitialValue = ushort.MaxValue;
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0xFFFF
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0xFFFF
             /// </summary>
             /// <param name="bytes">bytes to crc</param>
             /// <returns>the CRC 16 CCITT of the provided bytes</returns>
@@ -188,7 +188,7 @@ namespace NullFX.CRC {
             }
 
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0xFFFF
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0xFFFF
             /// </summary>
             /// <param name="bytes">The buffer to compute the CRC upon</param>
             /// <param name="start">The start index upon which to compute the CRC</param>
@@ -205,7 +205,7 @@ namespace NullFX.CRC {
         internal static class CcittInitial0x1D0F {
             internal static ushort InitialValue = 0x1D0F;
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0x1D0F
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0x1D0F
             /// </summary>
             /// <param name="bytes">bytes to crc</param>
             /// <returns>the CRC 16 CCITT of the provided bytes</returns>
@@ -214,7 +214,7 @@ namespace NullFX.CRC {
             }
 
             /// <summary>
-            /// Computes a CRC 16 CCITT of the provided bytes using an intial value of 0x1D0F
+            /// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0x1D0F
             /// </summary>
             /// <param name="bytes">The buffer to compute the CRC upon</param>
             /// <param name="start">The start index upon which to compute the CRC</param>
