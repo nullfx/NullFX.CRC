@@ -35,7 +35,7 @@ namespace NullFX.CRC {
         const uint InitialValue = uint.MaxValue;
 
         /// <summary>
-        /// Computes the CRC 32 checksum of the specified bytes using an intital value of 0xFFFFFFFF
+        /// Computes the CRC 32 checksum of the specified bytes using an initial value of 0xFFFFFFFF
         /// </summary>
         /// <param name="bytes">The buffer to compute the CRC upon</param>
         /// <returns>The specified CRC</returns>
@@ -44,11 +44,11 @@ namespace NullFX.CRC {
         }
 
         /// <summary>
-        /// Computes the CRC 32 checksum of the specified bytes using an intital value of 0xFFFFFFFF
+        /// Computes the CRC 32 checksum of the specified bytes using an initial value of 0xFFFFFFFF
         /// </summary>
         /// <param name="bytes">The buffer to compute the CRC upon</param>
-        /// <param name="bytes">The buffer to compute the CRC upon</param>
         /// <param name="start">The start index upon which to compute the CRC</param>
+        /// /// <param name="length">The length of the buffer upon which to compute the CRC</param>
         /// <returns>The specified CRC</returns>
         public static uint ComputeChecksum( byte[] bytes, int start, int length ) {
             if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }

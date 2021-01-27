@@ -43,7 +43,7 @@ namespace NullFX.CRC {
         }
 
         /// <summary>
-        /// Comuputes the CRC 8 of the specified byte range
+        /// Computes the CRC 8 of the specified byte range
         /// </summary>
         /// <param name="bytes">The buffer to compute the CRC upon</param>
         /// <param name="start">The start index upon which to compute the CRC</param>
