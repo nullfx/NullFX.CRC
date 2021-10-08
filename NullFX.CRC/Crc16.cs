@@ -109,7 +109,7 @@ namespace NullFX.CRC {
         }
 
         /// <summary>
-        /// A CRC 16 CCITT Utility using a reversed x^16 + x^15 + x^2 + 1 polynomial (0x8408) with an initial CRC value of 0
+        /// A CRC 16 CCITT Utility using a reversed x^16 + x^12 + x^8 + 1 polynomial (0x8408) with an initial CRC value of 0
         /// </summary>
         internal static class CcittKermit {
             // pre-computed table using reversed x^16 + x^15 + x^2 + 1 poly / 0x8408 
