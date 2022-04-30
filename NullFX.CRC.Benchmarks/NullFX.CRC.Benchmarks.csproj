@@ -1,20 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
-
-        <IsPackable>false</IsPackable>
-        <ReleaseVersion>1.1.2</ReleaseVersion>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-      <PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
-    </ItemGroup>
-
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<ReleaseVersion>1.1.4</ReleaseVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+		<PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
+	</ItemGroup>
 </Project>
