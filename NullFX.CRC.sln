@@ -46,6 +46,6 @@ Global
 		$0.DotNetNamingPolicy = $2
 		$2.DirectoryNamespaceAssociation = PrefixedHierarchical
 		$0.StandardHeader = $3
-		version = 1.1.2
+		version = 1.1.4
 	EndGlobalSection
 EndGlobal

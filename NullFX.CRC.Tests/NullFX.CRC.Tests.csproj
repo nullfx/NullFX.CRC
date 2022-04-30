@@ -1,20 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-
-    <IsPackable>false</IsPackable>
-    <IsPublishable>false</IsPublishable>
-    <ReleaseVersion>1.1.2</ReleaseVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<IsPublishable>false</IsPublishable>
+		<ReleaseVersion>1.1.4</ReleaseVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
+	</ItemGroup>
 </Project>
