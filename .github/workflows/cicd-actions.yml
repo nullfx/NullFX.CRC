@@ -22,7 +22,6 @@ jobs:
         sonarProjectKey: nullfx_NullFX.CRC
         sonarProjectName:  NullFX.CRC
         sonarOrganization: nullfx
-        projectBaseDir: ./NullFX.CRC
         dotnetDisableTests: true
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
