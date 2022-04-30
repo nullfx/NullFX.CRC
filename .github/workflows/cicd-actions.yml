@@ -17,7 +17,13 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
     - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
+      uses: highbyte/sonarscan-dotnet@v2.1.2
+      with:
+        sonarProjectKey: nullfx_NullFX.CRC
+        sonarProjectName:  NullFX.CRC
+        sonarOrganization: nullfx
+        projectBaseDir: ./NullFX.CRC
+        dotnetDisableTests: true
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
