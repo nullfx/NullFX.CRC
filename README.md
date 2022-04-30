@@ -1,4 +1,4 @@
-# NullFX CRC [![Build Status](https://travis-ci.org/nullfx/NullFX.CRC.svg?branch=master)](https://travis-ci.org/nullfx/NullFX.CRC) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nullfx_NullFX.CRC&metric=alert_status)](https://sonarcloud.io/dashboard?id=nullfx_NullFX.CRC)
+﻿# NullFX CRC [![build](https://github.com/nullfx/NullFX.CRC/actions/workflows/cicd-actions.yml/badge.svg)](https://github.com/nullfx/NullFX.CRC/actions/workflows/cicd-actions.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nullfx_NullFX.CRC&metric=alert_status)](https://sonarcloud.io/dashboard?id=nullfx_NullFX.CRC)
 NullFX CRC is a small set of CRC utilities written in native C# released under the MIT License
 
 ## NuGet:
@@ -8,7 +8,7 @@ NullFX CRC is a small set of CRC utilities written in native C# released under t
 
 ## Install
 ```sh
-dotnet add PROJECT package NullFX.CRC --version 1.1.3
+dotnet add PROJECT package NullFX.CRC --version 1.1.4
 ```
 
 ## Examples:
