@@ -1,0 +1,36 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: install dependencies
+      run: dotnet restore
+      
+    - name: install sonar scanner
+      run: dotnet tool install --global dotnet-sonarscanner
+      
+    - name: sonar scan prep
+      run: dotnet sonarscanner begin /k:"nullfx_NullFX.CRC" /o:"nullfx" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      
+    - name: build
+      run: dotnet build --no-restore
+      
+    - name: test
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: sonar scan prep
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
