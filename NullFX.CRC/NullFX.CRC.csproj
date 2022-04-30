@@ -4,24 +4,24 @@
 		<TargetFrameworks>net40;net45;net46;net47;net48;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<AssemblyName>NullFX.CRC</AssemblyName>
 		<Description>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Description>
-		<Copyright>2020 Steve Whitley</Copyright>
+		<Copyright>2022 Steve Whitley</Copyright>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Steve Whitley</Authors>
 		<Company>NullFX Software</Company>
 		<PackageTags>CRC8 CRC16 CRC32</PackageTags>
 		<PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
-		<PackageVersion>1.1.3</PackageVersion>
+		<PackageVersion>1.1.4</PackageVersion>
 		<Owners>Steve Whitley</Owners>
 		<Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
 		<Title>NullFX CRC</Title>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<AssemblyVersion>1.1.3.0</AssemblyVersion>
-		<FileVersion>1.1.3.0</FileVersion>
+		<AssemblyVersion>1.1.4.0</AssemblyVersion>
+		<FileVersion>1.1.4.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.1.3</Version>
+		<Version>1.1.4</Version>
 		<ReleaseVersion>1.1.4</ReleaseVersion>
 		<Configurations>Release;Debug</Configurations>
 	</PropertyGroup>
