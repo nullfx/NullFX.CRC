@@ -11,18 +11,18 @@
 		<PackageTags>CRC8 CRC16 CRC32</PackageTags>
 		<PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
-		<PackageVersion>1.1.4</PackageVersion>
+		<PackageVersion>1.1.5</PackageVersion>
 		<Owners>Steve Whitley</Owners>
 		<Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
 		<Title>NullFX CRC</Title>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<AssemblyVersion>1.1.4.0</AssemblyVersion>
-		<FileVersion>1.1.4.0</FileVersion>
+		<AssemblyVersion>1.1.5.0</AssemblyVersion>
+		<FileVersion>1.1.5.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.1.4</Version>
-		<ReleaseVersion>1.1.4</ReleaseVersion>
+		<Version>1.1.5</Version>
+		<ReleaseVersion>1.1.5</ReleaseVersion>
 		<Configurations>Release;Debug</Configurations>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

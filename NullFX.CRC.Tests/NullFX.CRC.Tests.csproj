@@ -4,14 +4,23 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<IsPublishable>false</IsPublishable>
-		<ReleaseVersion>1.1.4</ReleaseVersion>
+		<ReleaseVersion>1.1.5</ReleaseVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="xunit.assert" Version="2.4.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="xunit" />
+		<None Remove="xunit.runner.visualstudio" />
+		<None Remove="xunit.assert" />
 	</ItemGroup>
 </Project>
