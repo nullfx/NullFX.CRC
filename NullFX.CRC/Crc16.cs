@@ -177,7 +177,7 @@ namespace NullFX.CRC {
 		/// <summary>
 		/// A CRC 16 CCITT Utility using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0xFFFF
 		/// </summary>
-		internal static class Crc16CcittInitial0xFFFF_Impl {
+		internal static class Crc16CcittInitial0xFfffImpl {
 			internal static ushort InitialValue = ushort.MaxValue;
 			/// <summary>
 			/// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0xFFFF
@@ -203,7 +203,7 @@ namespace NullFX.CRC {
 		/// <summary>
 		/// A CRC 16 CCITT Utility using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0x1D0F
 		/// </summary>
-		internal static class Crc16CcittInitial0x1D0F_Impl {
+		internal static class Crc16CcittInitial0x1D0fImpl {
 			internal static ushort InitialValue = 0x1D0F;
 			/// <summary>
 			/// Computes a CRC 16 CCITT of the provided bytes using an initial value of 0x1D0F
@@ -276,9 +276,9 @@ namespace NullFX.CRC {
 				case Crc16Algorithm.CcittKermit:
 				return Crc16CcittKermitImpl.ComputeChecksumInternal ( bytes, start, length );
 				case Crc16Algorithm.CcittInitialValue0xFFFF:
-				return Crc16CcittInitial0xFFFF_Impl.ComputeChecksum ( bytes, start, length );
+				return Crc16CcittInitial0xFfffImpl.ComputeChecksum ( bytes, start, length );
 				case Crc16Algorithm.CcittInitialValue0x1D0F:
-				return Crc16CcittInitial0x1D0F_Impl.ComputeChecksumInternal ( bytes, start, length );
+				return Crc16CcittInitial0x1D0fImpl.ComputeChecksumInternal ( bytes, start, length );
 				case Crc16Algorithm.Dnp:
 				return DnpCrc16Impl.ComputeChecksumInternal ( bytes, start, length );
 				case Crc16Algorithm.Modbus:
