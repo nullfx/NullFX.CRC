@@ -29,7 +29,8 @@ namespace NullFX.CRC.Tests {
 			return a.Start != b.Start || a.Length != b.Length;
 		}
 
-		public override int GetHashCode ( ) {
+        [SuppressMessage ( "Minor Bug", "S2328:\"GetHashCode\" should not reference mutable fields", Justification = "<Pending>" )]
+        public override int GetHashCode ( ) {
 			return id.GetHashCode ( );
 		}
 	}

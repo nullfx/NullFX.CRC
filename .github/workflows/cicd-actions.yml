@@ -16,20 +16,24 @@ jobs:
       with:
         java-version: 1.11
     - uses: actions/checkout@v2
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: | 
+            4.0.x 
+            4.5.x 
+            4.6.x 
+            4.7.x 
+            4.8.x 
+            3.1.x 
+            6.0.x 
+            7.0.x
     - name: install dependencies
       run: dotnet restore      
     - name: build
-      run: dotnet build --no-restore      
+      run: dotnet build       
     - name: test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
