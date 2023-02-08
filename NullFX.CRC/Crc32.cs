@@ -52,7 +52,7 @@ namespace NullFX.CRC {
         /// <returns>The specified CRC</returns>
         public static uint ComputeChecksum( byte[] bytes, int start, int length ) {
             if ( bytes == null ) { throw new ArgumentNullException ( nameof ( bytes ) ); }
-            if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes.Length ) ); }
+            if ( bytes.Length == 0 ) { throw new ArgumentOutOfRangeException ( nameof ( bytes ) ); }
             if ( start < 0 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
             if ( start >= bytes.Length && length > 1 ) { throw new ArgumentOutOfRangeException ( nameof ( start ) ); }
             var crc = InitialValue;

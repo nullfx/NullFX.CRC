@@ -29,7 +29,7 @@ using System.Runtime.Serialization;
 
 namespace NullFX.CRC {
     [Serializable]
-    internal class UnknownAlgorithmException : Exception {
+    public class UnknownAlgorithmException : Exception {
         public Crc16Algorithm Algorithm { get; set; }
 
         public UnknownAlgorithmException ( ) {

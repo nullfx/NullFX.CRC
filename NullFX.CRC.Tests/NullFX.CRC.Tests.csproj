@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<IsPublishable>false</IsPublishable>
-		<ReleaseVersion>1.1.5</ReleaseVersion>
+		<ReleaseVersion>1.1.6</ReleaseVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />

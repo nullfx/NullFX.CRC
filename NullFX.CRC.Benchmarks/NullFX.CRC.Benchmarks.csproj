@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net47;net48;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net47;net48;netcoreapp3.1;net6.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
-		<ReleaseVersion>1.1.5</ReleaseVersion>
+		<ReleaseVersion>1.1.6</ReleaseVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />

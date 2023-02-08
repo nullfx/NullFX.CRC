@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC", "NullFX.CRC\NullFX.CRC.csproj", "{397FED63-D92E-4373-8DCE-3DAC62AEA656}"
 EndProject
@@ -9,12 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC.Tests", "NullFX.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{124147BD-9EE1-4469-AF35-834E7B19CB1C}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 		.github\workflows\cicd-actions.yml = .github\workflows\cicd-actions.yml
-		sonar-project.properties = sonar-project.properties
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullFX.CRC.Benchmarks", "NullFX.CRC.Benchmarks\NullFX.CRC.Benchmarks.csproj", "{9504D6B6-ED27-446C-A568-BB63BAD14C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NullFX.CRC.Benchmarks", "NullFX.CRC.Benchmarks\NullFX.CRC.Benchmarks.csproj", "{9504D6B6-ED27-446C-A568-BB63BAD14C88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

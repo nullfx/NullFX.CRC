@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace NullFX.CRC.Tests {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage ( "Minor Code Smell", "CA2211:Non-constant fields should not be visible", Justification = "Unit Test Class." )]
 	public struct TestRange : IEquatable<TestRange> {
 		private Guid id = Guid.NewGuid();
 		public static TestRange All = new TestRange(int.MinValue, int.MinValue);
@@ -28,7 +29,8 @@ namespace NullFX.CRC.Tests {
 			return a.Start != b.Start || a.Length != b.Length;
 		}
 
-		public override int GetHashCode ( ) {
+        [SuppressMessage ( "Minor Bug", "S2328:\"GetHashCode\" should not reference mutable fields", Justification = "<Pending>" )]
+        public override int GetHashCode ( ) {
 			return id.GetHashCode ( );
 		}
 	}
