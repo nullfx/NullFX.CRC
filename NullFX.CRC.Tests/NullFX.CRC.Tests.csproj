@@ -5,7 +5,7 @@
 		<IsPackable>false</IsPackable>
 		<IsPublishable>false</IsPublishable>
 		<ReleaseVersion>1.1.6</ReleaseVersion>
-    <SonarQubeExclude>true</SonarQubeExclude>
+                <SonarQubeExclude>true</SonarQubeExclude>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
