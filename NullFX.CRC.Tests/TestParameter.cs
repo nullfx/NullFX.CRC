@@ -5,10 +5,12 @@ namespace NullFX.CRC.Tests {
 		public TestRange TestRange { get; set; }
 		public ExpectedChecksum ExpectedCrc { get; set; }
 		public Crc16Algorithm Algorithm { get; set; }
+		public string TestScenario { get; set; }
 		public TestParameter ( byte[] payload, TestRange range, ExpectedChecksum expected ) {
 			TestPayload = payload;
 			TestRange = range;
 			ExpectedCrc = expected;
+			TestScenario = "";
 		}
 	}
 }

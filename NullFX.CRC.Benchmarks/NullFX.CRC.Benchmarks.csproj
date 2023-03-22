@@ -4,8 +4,9 @@
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net47;net48;netcoreapp3.1;net6.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
-		<ReleaseVersion>1.1.6</ReleaseVersion>
-	</PropertyGroup>
+		<ReleaseVersion>1.1.7</ReleaseVersion>
+                <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
 		<PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />

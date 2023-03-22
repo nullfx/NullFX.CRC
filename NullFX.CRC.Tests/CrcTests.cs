@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xunit;
+using FluentAssertions;
 
 namespace NullFX.CRC.Tests {
 	public class CrcTests {
@@ -15,7 +17,7 @@ namespace NullFX.CRC.Tests {
 				actual = Crc8.ComputeChecksum ( parameter.TestPayload, range.Start, range.Length );
 			}
 			var expected = (byte)(object)parameter.ExpectedCrc;
-			Assert.Equal ( expected, actual );
+			$"0x{actual:X2}".Should ( ).Be ( $"0x{expected:X2}" );
 		}
 
 		[Theory]
@@ -29,7 +31,7 @@ namespace NullFX.CRC.Tests {
 				actual = Crc16.ComputeChecksum ( parameter.Algorithm, parameter.TestPayload, range.Start, range.Length );
 			}
 			var expected = (ushort)(object)parameter.ExpectedCrc;
-			Assert.Equal ( expected, actual );
+			$"0x{actual:X4}".Should ( ).Be ( $"0x{expected:X4}" );
 		}
 
 		[Theory]
@@ -43,56 +45,56 @@ namespace NullFX.CRC.Tests {
 				actual = Crc32.ComputeChecksum ( parameter.TestPayload, range.Start, range.Length );
 			}
 			var expected = (uint)(object)parameter.ExpectedCrc;
-			Assert.Equal ( expected, actual );
+			$"0x{actual:X8}".Should ( ).Be ( $"0x{expected:X8}" );
 		}
 
 
 		public static IEnumerable<object[]> Crc8TestData ( ) {
-			yield return new object[] { new TestParameter<byte> ( buffer, TestRange.All, 0x49 ) };
-			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 3, 11 ), 0x66 ) };
-			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 9, 5 ), 0xB0 ) };
-			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 70, 6 ), 0x63 ) };
+			yield return new object[] { new TestParameter<byte> ( buffer, TestRange.All, 0x49 )				{ TestScenario = "CRC 8, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 3, 11 ), 0x66 )	{ TestScenario = "CRC 8, Checksum of bytes 3-14" }  };
+			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 9, 5 ),  0xB0 )	{ TestScenario = "CRC 8, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<byte> ( buffer, new TestRange ( 70, 6 ), 0x63 )	{ TestScenario = "CRC 8, Checksum of bytes 70-76" } };
 		}
 
 		public static IEnumerable<object[]> Crc16TestData ( ) {
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0xFD78 ) { Algorithm = Crc16Algorithm.Standard } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0xF3C7 ) { Algorithm = Crc16Algorithm.Ccitt } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0x3ACE ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0x2237 ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0xC097 ) { Algorithm = Crc16Algorithm.CcittKermit } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0x8B02 ) { Algorithm = Crc16Algorithm.Dnp } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All, 0x16E2 ) { Algorithm = Crc16Algorithm.Modbus } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0xFD78 )  { Algorithm = Crc16Algorithm.Standard				,TestScenario = "Standard CRC 16, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0xF3C7 )  { Algorithm = Crc16Algorithm.Ccitt					,TestScenario = "CRC 16 CCITT, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0x3ACE )  { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F	,TestScenario = "CRC 16 CCITT Initial Value: 0x1D0F, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0x2237 )  { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF	,TestScenario = "CRC 16 CCITT Initial Value: 0xFFFF, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0x97C0 )  { Algorithm = Crc16Algorithm.CcittKermit				,TestScenario = "CRC 16 CCITT Kermit, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0x028B )  { Algorithm = Crc16Algorithm.Dnp						,TestScenario = "CRC 16 DNP, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, TestRange.All,			 0x16E2 )  { Algorithm = Crc16Algorithm.Modbus					,TestScenario = "CRC 16 Modbus, Checksum of all bytes" } };
 
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x0B3B ) { Algorithm = Crc16Algorithm.Standard } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x610B ) { Algorithm = Crc16Algorithm.Ccitt } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x4907 ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0xB504 ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x9524 ) { Algorithm = Crc16Algorithm.CcittKermit } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x293E ) { Algorithm = Crc16Algorithm.Dnp } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0xEF3D ) { Algorithm = Crc16Algorithm.Modbus } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x0B3B ) { Algorithm = Crc16Algorithm.Standard					,TestScenario = "Standard CRC 16, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x610B ) { Algorithm = Crc16Algorithm.Ccitt					,TestScenario = "CRC 16 CCITT, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x4907 ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F	,TestScenario = "CRC 16 CCITT Initial Value: 0x1D0F, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0xB504 ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF	,TestScenario = "CRC 16 CCITT Initial Value: 0xFFFF, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x2495 ) { Algorithm = Crc16Algorithm.CcittKermit				,TestScenario = "CRC 16 CCITT Kermit, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0x3E29 ) { Algorithm = Crc16Algorithm.Dnp						,TestScenario = "CRC 16 DNP, Checksum of bytes 3-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 3, 11 ), 0xEF3D ) { Algorithm = Crc16Algorithm.Modbus					,TestScenario = "CRC 16 Modbus, Checksum of bytes 3-14" } };
 
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0xE86E ) { Algorithm = Crc16Algorithm.Standard } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0x8917 ) { Algorithm = Crc16Algorithm.Ccitt } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0x78D9 ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0x981B ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0xBECD ) { Algorithm = Crc16Algorithm.CcittKermit } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0x43F9 ) { Algorithm = Crc16Algorithm.Dnp } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ), 0xE84A ) { Algorithm = Crc16Algorithm.Modbus } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0xE86E ) { Algorithm = Crc16Algorithm.Standard					,TestScenario = "Standard CRC 16, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0x8917 ) { Algorithm = Crc16Algorithm.Ccitt					,TestScenario = "CRC 16 CCITT, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0x78D9 ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F	,TestScenario = "CRC 16 CCITT Initial Value: 0x1D0F, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0x981B ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF	,TestScenario = "CRC 16 CCITT Initial Value: 0xFFFF, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0xCDBE ) { Algorithm = Crc16Algorithm.CcittKermit				,TestScenario = "CRC 16 CCITT Kermit, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0xF943 ) { Algorithm = Crc16Algorithm.Dnp						,TestScenario = "CRC 16 DNP, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 9, 5 ),  0xE84A ) { Algorithm = Crc16Algorithm.Modbus                    ,TestScenario = "CRC 16 Modbus, Checksum of bytes 9-14" } };
 
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x24F6 ) { Algorithm = Crc16Algorithm.Standard } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x7545 ) { Algorithm = Crc16Algorithm.Ccitt } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x447B ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x7B55 ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x8842 ) { Algorithm = Crc16Algorithm.CcittKermit } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0xE95B ) { Algorithm = Crc16Algorithm.Dnp } };
-			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x3FF6 ) { Algorithm = Crc16Algorithm.Modbus } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x24F6 ) { Algorithm = Crc16Algorithm.Standard					,TestScenario = "Standard CRC 16, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x7545 ) { Algorithm = Crc16Algorithm.Ccitt					,TestScenario = "CRC 16 CCITT, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x447B ) { Algorithm = Crc16Algorithm.CcittInitialValue0x1D0F	,TestScenario = "CRC 16 CCITT Initial Value: 0x1D0F, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x7B55 ) { Algorithm = Crc16Algorithm.CcittInitialValue0xFFFF	,TestScenario = "CRC 16 CCITT Initial Value: 0xFFFF, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x4288 ) { Algorithm = Crc16Algorithm.CcittKermit				,TestScenario = "CRC 16 CCITT Kermit, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x5BE9 ) { Algorithm = Crc16Algorithm.Dnp						,TestScenario = "CRC 16 DNP, Checksum of bytes 70-76" } };
+			yield return new object[] { new TestParameter<ushort> ( buffer, new TestRange ( 70, 6 ), 0x3FF6 ) { Algorithm = Crc16Algorithm.Modbus					,TestScenario = "CRC 16 Modbus, Checksum of bytes 70-76" } };
 		}
 
 		public static IEnumerable<object[]> Crc32TestData ( ) {
-			yield return new object[] { new TestParameter<uint> ( buffer, TestRange.All, 0xCBE25E99 ) };
-			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 3, 11 ), 0xA0D118A0 ) };
-			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 9, 5 ), 0xDEF4CFE9 ) };
-			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 70, 6 ), 0xF373B43B ) };
+			yield return new object[] { new TestParameter<uint> ( buffer, TestRange.All, 0xCBE25E99 )			{ TestScenario = "CRC 32, Checksum of all bytes" } };
+			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 3, 11 ), 0xA0D118A0 )	{ TestScenario = "CRC 32, Checksum of bytes 3-14" }  };
+			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 9, 5 ),  0xDEF4CFE9 )	{ TestScenario = "CRC 32, Checksum of bytes 9-14" } };
+			yield return new object[] { new TestParameter<uint> ( buffer, new TestRange ( 70, 6 ), 0xF373B43B ) { TestScenario = "CRC 32, Checksum of bytes 70-76" } };
 		}
 	}
 }
