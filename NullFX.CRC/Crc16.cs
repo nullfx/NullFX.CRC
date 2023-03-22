@@ -104,7 +104,7 @@ namespace NullFX.CRC {
 				for ( int i = start; i <= end; ++i ) {
 					crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
 				}
-				return crc.ByteSwapCompliment ( );
+				return (ushort)(~crc);
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace NullFX.CRC {
 				for ( int i = start; i <= end; ++i ) {
 					crc = ( ushort )( ( crc >> 8 ) ^ table[( byte )( crc ^ bytes[i] )] );
 				}
-				return crc.ByteSwap ( );
+				return crc;
 			}
 		}
 

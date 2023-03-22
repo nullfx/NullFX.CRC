@@ -11,7 +11,7 @@
 		<PackageTags>CRC8 CRC16 CRC32</PackageTags>
 		<PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageVersion>1.1.6</PackageVersion>
 		<Owners>Steve Whitley</Owners>
 		<Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
