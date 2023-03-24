@@ -69,7 +69,9 @@ Segment of bytes CRC: DB1A36A1
 `Crc8`, and `Crc32`'s `ComputeChecksum` have 2 different signatures
 
 `ComputeChecksum`(`byte[]` bytes)
+
 and
+
 `ComputeChecksum`(`byte[]` bytes, `int` start, `int` length )
 
 `Crc16` has one additional initial parameter ( `Crc16Algorithm` )
@@ -81,11 +83,11 @@ where `Crc16Algorithm` is one of the following:
 - Modbus
 
 `ComputeChecksum` ( `Crc16Algorithm` algorithm, byte[] bytes )
+
 and
+
 `ComputeChecksum` ( `Crc16Algorithm` algorithm, byte[] bytes, `int` start, `int` length )
 
-
-
-
+.
 
 **Note**: this repository is also mirrored on [GitLab](https://gitlab.com/nullfx-crc/nullfx.crc)
