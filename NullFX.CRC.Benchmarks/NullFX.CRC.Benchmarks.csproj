@@ -8,7 +8,7 @@
                 <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
 		<PackageReference Include="System.Data.HashFunction.CRC" Version="2.0.0" />
 	</ItemGroup>
 	<ItemGroup>
