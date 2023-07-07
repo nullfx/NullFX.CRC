@@ -3,7 +3,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsPublishable>false</IsPublishable>
-    <ReleaseVersion>1.1.7</ReleaseVersion>
+    <!--when manually building this, replace #{RELEASE_VERSION}# with some .net version number like	1.1.1-->
+    <ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
     <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
   <ItemGroup>

@@ -24,12 +24,24 @@ jobs:
             3.1.x 
             6.0.x 
             7.0.x
+    - name: replace version tokens
+      uses: cschleiden/replace-tokens@v1.2
+      with:
+        files: '["**/*.csproj"]'
+      env:
+        RELEASE_VERSION: ${{ vars.RELEASE_VERSION }}
     - name: install dependencies
-      run: dotnet restore      
-    - name: build
-      run: dotnet build       
-    - name: test
+      run: dotnet restore
+    - name: build source
+      run: dotnet build -c Release       
+    - name: run tests
       run: dotnet test
+    - name: create nuget packages
+      run: dotnet pack -c Release -o ./out
+    - name: push nuget packages to github
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" -s "https://nuget.pkg.github.com/nullfx/index.json" -k "${{ secrets.GITHUB_TOKEN }}"
+    - name: push nuget packages to nuget.org
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" --skip-duplicate -s "https://api.nuget.org/v3/index.json"  -k "${{ secrets.NUGET_ORG_API_KEY }}"
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
