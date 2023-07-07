@@ -24,12 +24,12 @@ jobs:
             3.1.x 
             6.0.x 
             7.0.x
-    - name: install dependencies
-      run: dotnet restore
     - name: replace version tokens
       uses: cschleiden/replace-tokens@v1.2
       with:
         files: '["**/*.csproj"]'
+    - name: install dependencies
+      run: dotnet restore
     - name: build source
       run: dotnet build -c Release       
     - name: run tests
