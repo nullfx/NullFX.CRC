@@ -39,13 +39,9 @@ jobs:
     - name: create nuget packages
       run: dotnet pack -c Release -o ./out
     - name: push nuget packages to github
-      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" -s "https://nuget.pkg.github.com/nullfx/index.json" -k "$TOKEN"
-      env:
-        TOKEN: ${{ secrets.GIT_TOKEN }}
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" -s "https://nuget.pkg.github.com/nullfx/index.json" -k "${{ secrets.GITHUB_TOKEN }}"
     - name: push nuget packages to nuget.org
-      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" --skip-duplicate -s "https://api.nuget.org/v3/index.json"  -k "$TOKEN"
-      env:
-        TOKEN: ${{ secrets.NUGET_ORG_API_KEY }}
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" --skip-duplicate -s "https://api.nuget.org/v3/index.json"  -k "${{ secrets.NUGET_ORG_API_KEY }}"
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
@@ -67,7 +63,7 @@ jobs:
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
     - name: Build and analyze
       env:
-        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}  # Needed to get PR information, if any
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
