@@ -12,20 +12,21 @@
 		<PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.8</PackageVersion>
 		<Owners>Steve Whitley</Owners>
 		<Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
 		<Title>NullFX CRC</Title>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<AssemblyVersion>1.1.8.0</AssemblyVersion>
-		<FileVersion>1.1.8.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.1.8</Version>
-		<ReleaseVersion>1.1.8</ReleaseVersion>
 		<Configurations>Release;Debug</Configurations>
 		<SonarQubeTestProject>True</SonarQubeTestProject>
+		<!--when manually building this, replace #{RELEASE_VERSION}# with some .net version number like	1.1.1-->
+		<PackageVersion>#{RELEASE_VERSION}#</PackageVersion>
+		<AssemblyVersion>#{RELEASE_VERSION}#.0</AssemblyVersion>
+		<FileVersion>#{RELEASE_VERSION}#.0</FileVersion>
+		<Version>#{RELEASE_VERSION}#</Version>
+		<ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>
