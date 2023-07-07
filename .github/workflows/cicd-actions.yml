@@ -27,7 +27,7 @@ jobs:
     - name: install dependencies
       run: dotnet restore      
     - name: build source
-      run: dotnet build       
+      run: dotnet build -c Release       
     - name: run tests
       run: dotnet test
     - name: create nuget packages
