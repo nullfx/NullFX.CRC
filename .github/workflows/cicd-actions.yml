@@ -36,6 +36,10 @@ jobs:
       run: dotnet nuget push ./out/*.nupkg -k ${GITHUB_TOKEN} -s https://nuget.pkg.github.com/nullfx/index.json
       env: 
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+    - name: push nuget packages to nuget.org
+      run: dotnet nuget push ./out/*.nupkg --api-key ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      env: 
+        NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
