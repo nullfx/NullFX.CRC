@@ -29,7 +29,7 @@ jobs:
       with:
         files: '["**/*.csproj"]'
       env:
-        RELEASE_VERSION: ${{ var.RELEASE_VERSION }}
+        RELEASE_VERSION: ${{ vars.RELEASE_VERSION }}
     - name: install dependencies
       run: dotnet restore
     - name: build source
