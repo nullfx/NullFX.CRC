@@ -37,7 +37,7 @@ jobs:
       env: 
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
     - name: push nuget packages to nuget.org
-      run: dotnet nuget push ./out/*.nupkg --skip-duplicate -k ${NUGET_API_KEY} -s ""https://api.nuget.org/v3/index.json"
+      run: dotnet nuget push ./out/*.nupkg --skip-duplicate -k ${NUGET_API_KEY} -s "https://api.nuget.org/v3/index.json"
       env: 
         NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
     - name: Cache SonarCloud packages
