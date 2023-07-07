@@ -39,9 +39,9 @@ jobs:
     - name: create nuget packages
       run: dotnet pack -c Release -o ./out
     - name: push nuget packages to github
-      run: dotnet nuget push "./out/NullFX.CRC.$RELEASE_VERSION.nupkg" -s "https://nuget.pkg.github.com/nullfx/index.json" -k ${{ secrets.GIT_TOKEN }}
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" -s "https://nuget.pkg.github.com/nullfx/index.json" -k ${{ secrets.GIT_TOKEN }}
     - name: push nuget packages to nuget.org
-      run: dotnet nuget push "./out/NullFX.CRC.$RELEASE_VERSION.nupkg" --skip-duplicate -s "https://api.nuget.org/v3/index.json" -k ${{ secrets.NUGET_ORG_API_KEY }}
+      run: dotnet nuget push "./out/NullFX.CRC.${{ vars.RELEASE_VERSION }}.nupkg" --skip-duplicate -s "https://api.nuget.org/v3/index.json" -k ${{ secrets.NUGET_ORG_API_KEY }}
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
