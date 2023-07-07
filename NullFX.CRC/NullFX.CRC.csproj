@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net40;net45;net46;net47;net48;netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net40;net45;net46;net47;net48;netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
 		<AssemblyName>NullFX.CRC</AssemblyName>
 		<Description>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Description>
-		<Copyright>2022 Steve Whitley</Copyright>
+		<Copyright>2023 Steve Whitley</Copyright>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Steve Whitley</Authors>
 		<Company>NullFX Software</Company>
@@ -12,18 +12,18 @@
 		<PackageProjectUrl>https://github.com/nullfx/NullFX.CRC</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nullfx/NullFX.CRC</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>1.1.7</PackageVersion>
+		<PackageVersion>1.1.8</PackageVersion>
 		<Owners>Steve Whitley</Owners>
 		<Summary>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Summary>
 		<Title>NullFX CRC</Title>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<AssemblyVersion>1.1.7.0</AssemblyVersion>
-		<FileVersion>1.1.7.0</FileVersion>
+		<AssemblyVersion>1.1.8.0</AssemblyVersion>
+		<FileVersion>1.1.8.0</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Version>1.1.7</Version>
-		<ReleaseVersion>1.1.7</ReleaseVersion>
+		<Version>1.1.8</Version>
+		<ReleaseVersion>1.1.8</ReleaseVersion>
 		<Configurations>Release;Debug</Configurations>
 		<SonarQubeTestProject>True</SonarQubeTestProject>
 	</PropertyGroup>

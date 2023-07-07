@@ -26,10 +26,16 @@ jobs:
             7.0.x
     - name: install dependencies
       run: dotnet restore      
-    - name: build
+    - name: build source
       run: dotnet build       
-    - name: test
+    - name: run tests
       run: dotnet test
+    - name: create nuget packages
+      run: dotnet pack -c Release -o ./out
+    - name: push nuget packages to github
+      run: dotnet nuget push ./out/*.nupkg -k ${GITHUB_TOKEN} -s https://nuget.pkg.github.com/nullfx/index.json
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
@@ -51,7 +57,7 @@ jobs:
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
     - name: Build and analyze
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
