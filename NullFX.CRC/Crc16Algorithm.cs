@@ -38,15 +38,15 @@ namespace NullFX.CRC {
 		/// </summary>
 		Ccitt,
 		/// <summary>
-		/// Performs CRC 16 CCITT using a reversed x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0
+		/// Performs CRC 16 CCITT using a reversed  x^16 + x^12 + x^5 + 1 polynomial with an initial CRC value of 0
 		/// </summary>
 		CcittKermit,
 		/// <summary>
-		/// Performs CRC 16 CCITT using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0xffff
+		/// Performs CRC 16 CCITT using  x^16 + x^12 + x^5 + 1 polynomial with an initial CRC value of 0xffff
 		/// </summary>
 		CcittInitialValue0xFFFF,
 		/// <summary>
-		/// Performs CRC 16 CCITT using x^16 + x^15 + x^2 + 1 polynomial with an initial CRC value of 0x1D0F
+		/// Performs CRC 16 CCITT using x^16 + x^12 + x^5 + 1 polynomial with an initial CRC value of 0x1D0F
 		/// </summary>
 		CcittInitialValue0x1D0F,
 		/// <summary>
