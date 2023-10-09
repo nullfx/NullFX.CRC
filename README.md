@@ -11,7 +11,7 @@ NullFX CRC is a small set of CRC utilities written in native C# released under t
 ## Install
 
 ```sh
-dotnet add PROJECT package NullFX.CRC --version 1.1.9
+dotnet add PROJECT package NullFX.CRC --version 1.1.10
 ```
 
 ## Examples:
