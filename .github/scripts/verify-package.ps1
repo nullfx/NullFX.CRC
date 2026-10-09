@@ -106,3 +106,4 @@ if ($failures.Count -gt 0) {
   throw "Package verification failed with $($failures.Count) problem(s)."
 }
 Write-Host "Package $nupkgPath verified."
+exit 0
