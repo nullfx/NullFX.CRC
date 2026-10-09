@@ -5,9 +5,9 @@
 #   2. Increment the version (patch by default) just before the release build.
 #      Idempotent: if the stored version has no tag yet (an earlier run failed
 #      after bumping), it is released as-is instead of being incremented again.
-#   3. Commit the bump locally, then build all TFMs, pack and verify the package
-#      with that exact version, then run unit tests and benchmarks. Packing happens
-#      straight after the build so later test/benchmark rebuilds cannot alter it.
+#   3. Run benchmarks and write the results into README.md (# Benchmarks section),
+#      then commit the version bump and README together locally. Build all TFMs,
+#      pack and verify the package from that commit, then run unit tests.
 #   4. Push the version commit to main (with [skip ci] so it does not retrigger).
 #   5. Publish to GitHub Packages, to nuget.org via Trusted Publishing (only if
 #      the NUGET_USER secret is set), and create the v<version> tag + GitHub release.
@@ -84,20 +84,38 @@ jobs:
         shell: pwsh
         run: ./.github/scripts/bump-version.ps1 -Bump '${{ inputs.bump || 'patch' }}'
 
-      - name: Commit version bump (local)
-        if: steps.version.outputs.changed == 'true'
-        run: |
-          git add Directory.Build.props
-          git commit -m "release: v${{ steps.version.outputs.version }} [skip ci]"
-
       - name: Restore
         run: |
           dotnet restore ${{ env.LIBRARY_PROJECT }}
           dotnet restore ${{ env.TEST_PROJECT }}
 
+      # Benchmarks run before the release commit so their results can go into the
+      # README in that same commit. The package (which embeds README.md and the
+      # SourceLink commit SHA) is then built from exactly the commit that is pushed.
+      - name: Benchmarks (net10.0, short run)
+        run: >
+          dotnet run --project ${{ env.BENCHMARK_PROJECT }} -c Release -f net10.0
+          --property:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          -- --job short --exporters json github --artifacts artifacts/benchmarks
+
+      - name: Update Readme Benchmarks
+        # Skipped when re-running a release whose version commit was already pushed,
+        # so the packed README always matches what is on main.
+        if: steps.version.outputs.changed == 'true'
+        shell: pwsh
+        run: ./.github/scripts/update-readme-benchmarks.ps1 -Version '${{ steps.version.outputs.version }}'
+
+      - name: Commit version bump and README (local)
+        id: commit
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          git add Directory.Build.props README.md
+          git commit -m "release: v${{ steps.version.outputs.version }} [skip ci]"
+          "committed=true" | Add-Content $env:GITHUB_OUTPUT
+
       - name: Build (all target frameworks)
         run: >
-          dotnet build ${{ env.LIBRARY_PROJECT }} -c Release --no-restore
+          dotnet build ${{ env.LIBRARY_PROJECT }} -c Release --no-restore --no-incremental
           -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
           -bl:artifacts/logs/release-build.binlog
 
@@ -120,12 +138,6 @@ jobs:
           --logger "trx;LogFileName=test-results.trx"
           --results-directory artifacts/test-results
 
-      - name: Benchmarks (net10.0, short run)
-        run: >
-          dotnet run --project ${{ env.BENCHMARK_PROJECT }} -c Release -f net10.0
-          --property:RELEASE_VERSION=${{ steps.version.outputs.version }}
-          -- --job short --exporters json github --artifacts artifacts/benchmarks
-
       - name: Upload release artifacts
         if: always()
         uses: actions/upload-artifact@v6
@@ -140,7 +152,7 @@ jobs:
           retention-days: 90
 
       - name: Push version commit to main
-        if: steps.version.outputs.changed == 'true'
+        if: steps.commit.outputs.committed == 'true'
         # Fails (and stops the release before anything is published) if main moved
         # or branch protection rejects the push; re-running is safe.
         run: git push origin HEAD:main

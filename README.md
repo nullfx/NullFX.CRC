@@ -95,3 +95,7 @@ and
 .
 
 **Note**: this repository is also mirrored on [GitLab](https://gitlab.com/nullfx-crc/nullfx.crc)
+
+# Benchmarks
+
+_Benchmark results are published here automatically by the release workflow._
