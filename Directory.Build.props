@@ -1,0 +1,28 @@
+<Project>
+  <!--
+    Semantic version source of truth for NullFX.CRC.
+
+    RELEASE_MAJOR / RELEASE_MINOR / RELEASE_REVISION hold the most recently
+    released (or pending-release) version. They are the only place the version
+    number is stored. The release workflow (.github/workflows/release.yml)
+    increments them, commits the change to main, and builds/packs with the
+    resulting version. Do not edit RELEASE_VERSION directly; it is computed.
+
+    Any of these can be overridden on the command line, for example:
+      dotnet pack -c Release -p:RELEASE_VERSION=0.0.0
+      dotnet build -c Release -p:RELEASE_REVISION=11
+  -->
+  <PropertyGroup>
+    <RELEASE_MAJOR Condition="'$(RELEASE_MAJOR)' == ''">1</RELEASE_MAJOR>
+    <RELEASE_MINOR Condition="'$(RELEASE_MINOR)' == ''">1</RELEASE_MINOR>
+    <RELEASE_REVISION Condition="'$(RELEASE_REVISION)' == ''">10</RELEASE_REVISION>
+
+    <RELEASE_VERSION Condition="'$(RELEASE_VERSION)' == ''">$(RELEASE_MAJOR).$(RELEASE_MINOR).$(RELEASE_REVISION)</RELEASE_VERSION>
+
+    <Version>$(RELEASE_VERSION)</Version>
+    <PackageVersion>$(RELEASE_VERSION)</PackageVersion>
+    <AssemblyVersion>$(RELEASE_VERSION).0</AssemblyVersion>
+    <FileVersion>$(RELEASE_VERSION).0</FileVersion>
+    <InformationalVersion>$(RELEASE_VERSION)</InformationalVersion>
+  </PropertyGroup>
+</Project>

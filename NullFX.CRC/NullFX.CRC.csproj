@@ -5,7 +5,7 @@
 		<AssemblyName>NullFX.CRC</AssemblyName>
 		<Description>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Description>
 		<Copyright>2023 Steve Whitley</Copyright>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Authors>Steve Whitley</Authors>
 		<Company>NullFX Software</Company>
 		<PackageTags>CRC8 CRC16 CRC32</PackageTags>
@@ -21,12 +21,11 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Configurations>Release;Debug</Configurations>
 		<SonarQubeTestProject>True</SonarQubeTestProject>
-		<!--when manually building this, replace #{RELEASE_VERSION}# with some .net version number like	1.1.1-->
-		<PackageVersion>#{RELEASE_VERSION}#</PackageVersion>
-		<AssemblyVersion>#{RELEASE_VERSION}#.0</AssemblyVersion>
-		<FileVersion>#{RELEASE_VERSION}#.0</FileVersion>
-		<Version>#{RELEASE_VERSION}#</Version>
-		<ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
+		<!--
+			Version properties (Version, PackageVersion, AssemblyVersion, FileVersion,
+			InformationalVersion) are computed from RELEASE_MAJOR/RELEASE_MINOR/RELEASE_REVISION
+			in ../Directory.Build.props. Override with -p:RELEASE_VERSION=x.y.z when needed.
+		-->
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
