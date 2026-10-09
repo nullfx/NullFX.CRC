@@ -9,13 +9,15 @@
 #      with that exact version, then run unit tests and benchmarks. Packing happens
 #      straight after the build so later test/benchmark rebuilds cannot alter it.
 #   4. Push the version commit to main (with [skip ci] so it does not retrigger).
-#   5. Publish to GitHub Packages, to nuget.org (only if NUGET_ORG_API_KEY is
-#      set), and create the v<version> tag + GitHub release.
+#   5. Publish to GitHub Packages, to nuget.org via Trusted Publishing (only if
+#      the NUGET_USER secret is set), and create the v<version> tag + GitHub release.
 #
 # Nothing is published if any build/test/pack/verify/push step fails.
 #
 # Optional secrets:
-#   NUGET_ORG_API_KEY        nuget.org API key. Publishing to nuget.org is skipped without it.
+#   NUGET_USER               nuget.org profile name (not email) that owns the Trusted Publishing
+#                            policy for this repo + release.yml. nuget.org publishing is skipped
+#                            without it. No long-lived nuget.org API key is stored anywhere.
 #   RELEASE_PUSH_TOKEN       Token allowed to push to main when branch protection blocks GITHUB_TOKEN.
 #   RELEASE_VARIABLES_TOKEN  Fine-grained PAT with "Variables: read and write" on this repo; when set,
 #                            RELEASE_MAJOR/MINOR/REVISION repository variables are mirrored after release.
@@ -33,8 +35,7 @@ on:
         default: patch
 
 permissions:
-  contents: write   # push the version commit, create tag + release
-  packages: write   # publish to GitHub Packages
+  contents: read
 
 concurrency:
   group: release-${{ github.repository }}
@@ -53,6 +54,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     timeout-minutes: 60
+    permissions:
+      contents: write   # push the version commit, create tag + release
+      packages: write   # publish to GitHub Packages
+      id-token: write   # GitHub OIDC token for nuget.org Trusted Publishing
     steps:
       - uses: actions/checkout@v6
         with:
@@ -144,10 +149,10 @@ jobs:
         id: creds
         shell: pwsh
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
+          NUGET_USER: ${{ secrets.NUGET_USER }}
           VARIABLES_TOKEN: ${{ secrets.RELEASE_VARIABLES_TOKEN }}
         run: |
-          "nuget=$(-not [string]::IsNullOrEmpty($env:NUGET_API_KEY))".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
+          "nuget=$(-not [string]::IsNullOrEmpty($env:NUGET_USER))".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
           "variables=$(-not [string]::IsNullOrEmpty($env:VARIABLES_TOKEN))".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
 
       - name: Publish to GitHub Packages
@@ -159,11 +164,22 @@ jobs:
           --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           --api-key $env:GITHUB_PACKAGES_TOKEN --skip-duplicate --no-symbols
 
+      # Trusted Publishing: exchange this job's GitHub OIDC token for a short-lived
+      # (~1 hour) nuget.org API key immediately before pushing. Requires a Trusted
+      # Publishing policy on nuget.org for owner nullfx, repository NullFX.CRC and
+      # workflow file release.yml.
+      - name: NuGet login (OIDC -> temporary API key)
+        if: steps.creds.outputs.nuget == 'true'
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish to nuget.org
         if: steps.creds.outputs.nuget == 'true'
         shell: pwsh
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         # The matching .snupkg symbols package is pushed automatically alongside.
         run: >
           dotnet nuget push "artifacts/package/NullFX.CRC.${{ steps.version.outputs.version }}.nupkg"
@@ -172,7 +188,7 @@ jobs:
 
       - name: nuget.org publish skipped
         if: steps.creds.outputs.nuget != 'true'
-        run: echo "::warning::NUGET_ORG_API_KEY is not configured; skipped publishing to nuget.org."
+        run: echo "::warning::NUGET_USER is not configured; skipped publishing to nuget.org (Trusted Publishing)."
 
       - name: Create GitHub release
         shell: pwsh
@@ -210,5 +226,5 @@ jobs:
             "| Previous version | ``${{ steps.version.outputs.previous }}`` |",
             "| Released version | ``${{ steps.version.outputs.version }}`` |",
             "| Version incremented | ${{ steps.version.outputs.changed }} |",
-            "| nuget.org publish | $(if ('${{ steps.creds.outputs.nuget }}' -eq 'true') { 'enabled' } else { 'skipped (no NUGET_ORG_API_KEY)' }) |"
+            "| nuget.org publish | $(if ('${{ steps.creds.outputs.nuget }}' -eq 'true') { 'enabled (Trusted Publishing)' } else { 'skipped (no NUGET_USER)' }) |"
           ) -join "`n" | Add-Content $env:GITHUB_STEP_SUMMARY
