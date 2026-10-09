@@ -5,9 +5,9 @@
 #   2. Increment the version (patch by default) just before the release build.
 #      Idempotent: if the stored version has no tag yet (an earlier run failed
 #      after bumping), it is released as-is instead of being incremented again.
-#   3. Commit the bump locally, then build all TFMs, pack and verify the package
-#      with that exact version, then run unit tests and benchmarks. Packing happens
-#      straight after the build so later test/benchmark rebuilds cannot alter it.
+#   3. Build all TFMs, run unit tests and benchmarks, write the benchmark results
+#      into README.md (# Benchmarks section), then pack and verify the package with
+#      that exact version. The version bump and README are committed together.
 #   4. Push the version commit to main (with [skip ci] so it does not retrigger).
 #   5. Publish to GitHub Packages, to nuget.org via Trusted Publishing (only if
 #      the NUGET_USER secret is set), and create the v<version> tag + GitHub release.
@@ -84,12 +84,6 @@ jobs:
         shell: pwsh
         run: ./.github/scripts/bump-version.ps1 -Bump '${{ inputs.bump || 'patch' }}'
 
-      - name: Commit version bump (local)
-        if: steps.version.outputs.changed == 'true'
-        run: |
-          git add Directory.Build.props
-          git commit -m "release: v${{ steps.version.outputs.version }} [skip ci]"
-
       - name: Restore
         run: |
           dotnet restore ${{ env.LIBRARY_PROJECT }}
@@ -100,18 +94,6 @@ jobs:
           dotnet build ${{ env.LIBRARY_PROJECT }} -c Release --no-restore
           -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
           -bl:artifacts/logs/release-build.binlog
-
-      # README.md and the package metadata carry no version placeholders (the version
-      # comes from MSBuild), so there is nothing to token-replace before packing.
-      - name: Pack
-        run: >
-          dotnet pack ${{ env.LIBRARY_PROJECT }} -c Release --no-build
-          -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
-          -o artifacts/package
-
-      - name: Verify package
-        shell: pwsh
-        run: ./.github/scripts/verify-package.ps1 -PackageDirectory artifacts/package -Version '${{ steps.version.outputs.version }}'
 
       - name: Unit tests (net10.0)
         run: >
@@ -126,6 +108,25 @@ jobs:
           --property:RELEASE_VERSION=${{ steps.version.outputs.version }}
           -- --job short --exporters json github --artifacts artifacts/benchmarks
 
+      - name: Update Readme Benchmarks
+        # Skipped when re-running a release whose version commit was already pushed,
+        # so the packed README always matches what is on main.
+        if: steps.version.outputs.changed == 'true'
+        shell: pwsh
+        run: ./.github/scripts/update-readme-benchmarks.ps1 -Version '${{ steps.version.outputs.version }}'
+
+      # Packed after the README update so the README inside the package (shown on
+      # nuget.org) carries this release's benchmark results.
+      - name: Pack
+        run: >
+          dotnet pack ${{ env.LIBRARY_PROJECT }} -c Release --no-build
+          -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          -o artifacts/package
+
+      - name: Verify package
+        shell: pwsh
+        run: ./.github/scripts/verify-package.ps1 -PackageDirectory artifacts/package -Version '${{ steps.version.outputs.version }}'
+
       - name: Upload release artifacts
         if: always()
         uses: actions/upload-artifact@v6
@@ -139,8 +140,16 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
-      - name: Push version commit to main
+      - name: Commit version bump and README
+        id: commit
         if: steps.version.outputs.changed == 'true'
+        run: |
+          git add Directory.Build.props README.md
+          git commit -m "release: v${{ steps.version.outputs.version }} [skip ci]"
+          "committed=true" | Add-Content $env:GITHUB_OUTPUT
+
+      - name: Push version commit to main
+        if: steps.commit.outputs.committed == 'true'
         # Fails (and stops the release before anything is published) if main moved
         # or branch protection rejects the push; re-running is safe.
         run: git push origin HEAD:main
