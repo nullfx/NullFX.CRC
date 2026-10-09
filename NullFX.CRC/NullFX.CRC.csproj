@@ -27,6 +27,8 @@
 		<FileVersion>#{RELEASE_VERSION}#.0</FileVersion>
 		<Version>#{RELEASE_VERSION}#</Version>
 		<ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>
