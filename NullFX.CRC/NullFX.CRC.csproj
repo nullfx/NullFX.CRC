@@ -27,6 +27,9 @@
 			InformationalVersion) are computed from RELEASE_MAJOR/RELEASE_MINOR/RELEASE_REVISION
 			in ../Directory.Build.props. Override with -p:RELEASE_VERSION=x.y.z when needed.
 		-->
+		<!-- SYSLIB0051: legacy formatter-based serialization constructor on UnknownAlgorithmException
+		     (kept for compatibility; marked [Obsolete] on net8.0+ to match the base Exception). -->
+		<NoWarn>$(NoWarn);SYSLIB0051</NoWarn>
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
