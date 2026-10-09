@@ -6,7 +6,7 @@
 #      Idempotent: if the stored version has no tag yet (an earlier run failed
 #      after bumping), it is released as-is instead of being incremented again.
 #   3. Build all TFMs, run unit tests and benchmarks, write the benchmark results
-#      into README.md (# Benchmarks section), then pack and verify the package with
+#      into README.md (## Benchmarks section), then pack and verify the package with
 #      that exact version. The version bump and README are committed together.
 #   4. Push the version commit to main (with [skip ci] so it does not retrigger).
 #   5. Publish to GitHub Packages, to nuget.org via Trusted Publishing (only if

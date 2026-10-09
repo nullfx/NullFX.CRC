@@ -96,7 +96,7 @@ and
 
 **Note**: this repository is also mirrored on [GitLab](https://gitlab.com/nullfx-crc/nullfx.crc)
 
-# Benchmarks
+## Benchmarks
 
 _BenchmarkDotNet ShortRun results from the release build for v1.1.14 on a GitHub-hosted runner. Absolute timings vary between runs and machines; compare rows within a table._
 
