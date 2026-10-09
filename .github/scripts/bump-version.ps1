@@ -43,11 +43,19 @@ function Set-Part([string] $name, [int] $value) {
 }
 
 function Test-Released([string] $version) {
-  foreach ($tag in @("v$version", $version)) {
-    & git rev-parse -q --verify "refs/tags/$tag" *> $null
-    if ($LASTEXITCODE -eq 0) { return $true }
+  try {
+    foreach ($tag in @("v$version", $version)) {
+      & git rev-parse -q --verify "refs/tags/$tag" *> $null
+      if ($LASTEXITCODE -eq 0) { return $true }
+    }
+    return $false
   }
-  return $false
+  finally {
+    # 'git rev-parse --verify' exits 1 when a tag does not exist, which is the
+    # expected answer here. Don't let that leak out as the step's exit code:
+    # GitHub Actions' pwsh wrapper ends every step with 'exit $LASTEXITCODE'.
+    $global:LASTEXITCODE = 0
+  }
 }
 
 $major = Get-Part 'RELEASE_MAJOR'
@@ -94,3 +102,5 @@ if ($env:GITHUB_OUTPUT) {
     "changed=$($changed.ToString().ToLowerInvariant())"
   ) | Add-Content -Path $env:GITHUB_OUTPUT
 }
+
+exit 0
