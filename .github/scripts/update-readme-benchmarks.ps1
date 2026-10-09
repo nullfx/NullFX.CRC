@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Replaces everything after the "# Benchmarks" heading in README.md with the latest
+  Replaces everything after the "## Benchmarks" heading in README.md with the latest
   BenchmarkDotNet GitHub-markdown report.
 
 .DESCRIPTION
@@ -18,7 +18,7 @@
 param(
   [string] $ReadmePath = 'README.md',
   [string] $ResultsDirectory = 'artifacts/benchmarks/results',
-  [string] $Heading = '# Benchmarks',
+  [string] $Heading = '## Benchmarks',
   [string] $Version
 )
 

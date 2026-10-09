@@ -102,6 +102,39 @@ finally {
   $zip.Dispose()
 }
 
+# Symbols package: nuget.org only accepts portable PDBs (they start with the "BSJB"
+# metadata signature; Windows PDBs start with "Microsoft C/C++ MSF 7.00").
+$snupkgPath = Join-Path $PackageDirectory "$PackageId.$Version.snupkg"
+if (-not (Test-Path $snupkgPath)) {
+  Fail "Expected symbols package '$snupkgPath' was not found."
+}
+else {
+  $symbols = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $snupkgPath))
+  try {
+    $pdbs = @($symbols.Entries | Where-Object { $_.FullName -like 'lib/*.pdb' })
+    foreach ($tfm in $expectedTfms) {
+      if (-not ($pdbs | Where-Object { $_.FullName -eq "lib/$tfm/NullFX.CRC.pdb" })) { Fail "Missing lib/$tfm/NullFX.CRC.pdb in the symbols package." }
+    }
+    foreach ($pdb in $pdbs) {
+      $stream = $pdb.Open()
+      try {
+        $header = [byte[]]::new(4)
+        $read = $stream.Read($header, 0, 4)
+      }
+      finally { $stream.Dispose() }
+      if ($read -lt 4 -or [System.Text.Encoding]::ASCII.GetString($header) -ne 'BSJB') {
+        Fail "$($pdb.FullName) in the symbols package is not a portable PDB (nuget.org will reject it)."
+      }
+    }
+    $line = "| Symbols | $($pdbs.Count) portable PDB(s) checked |"
+    Write-Host $line
+    if ($env:GITHUB_STEP_SUMMARY) { Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $line }
+  }
+  finally {
+    $symbols.Dispose()
+  }
+}
+
 if ($failures.Count -gt 0) {
   throw "Package verification failed with $($failures.Count) problem(s)."
 }

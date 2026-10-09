@@ -27,12 +27,16 @@
 			InformationalVersion) are computed from RELEASE_MAJOR/RELEASE_MINOR/RELEASE_REVISION
 			in ../Directory.Build.props. Override with -p:RELEASE_VERSION=x.y.z when needed.
 		-->
+		<!-- SYSLIB0051: legacy formatter-based serialization constructor on UnknownAlgorithmException
+		     (kept for compatibility; marked [Obsolete] on net8.0+ to match the base Exception). -->
+		<NoWarn>$(NoWarn);SYSLIB0051</NoWarn>
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>
-		</DebugType>
+		<!-- Must be portable: nuget.org rejects .snupkg files containing Windows (full) PDBs.
+		     An empty DebugType makes the compiler fall back to 'full' on Windows. -->
+		<DebugType>portable</DebugType>
 		<WarningLevel>4</WarningLevel>
 		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
