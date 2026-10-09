@@ -1,28 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <!-- Tests run on a single common runtime; the library itself multi-targets. -->
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsPublishable>false</IsPublishable>
-    <!--when manually building this, replace #{RELEASE_VERSION}# with some .net version number like	1.1.1-->
-    <ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
-    <SonarQubeExclude>true</SonarQubeExclude>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
-    <PackageReference Include="xunit" Version="*" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="*">
+    <!-- FluentAssertions is held on 7.x: 8.x moved to a commercial license. -->
+    <PackageReference Include="FluentAssertions" Version="7.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="xunit.assert" Version="*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NullFX.CRC\NullFX.CRC.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="xunit" />
-    <None Remove="xunit.runner.visualstudio" />
-    <None Remove="xunit.assert" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,230 @@
+# Release pipeline. Runs after a pull request is merged into main (push to main)
+# or on manual dispatch. Order of operations:
+#
+#   1. Read RELEASE_MAJOR/MINOR/REVISION from Directory.Build.props.
+#   2. Increment the version (patch by default) just before the release build.
+#      Idempotent: if the stored version has no tag yet (an earlier run failed
+#      after bumping), it is released as-is instead of being incremented again.
+#   3. Commit the bump locally, then build all TFMs, pack and verify the package
+#      with that exact version, then run unit tests and benchmarks. Packing happens
+#      straight after the build so later test/benchmark rebuilds cannot alter it.
+#   4. Push the version commit to main (with [skip ci] so it does not retrigger).
+#   5. Publish to GitHub Packages, to nuget.org via Trusted Publishing (only if
+#      the NUGET_USER secret is set), and create the v<version> tag + GitHub release.
+#
+# Nothing is published if any build/test/pack/verify/push step fails.
+#
+# Optional secrets:
+#   NUGET_USER               nuget.org profile name (not email) that owns the Trusted Publishing
+#                            policy for this repo + release.yml. nuget.org publishing is skipped
+#                            without it. No long-lived nuget.org API key is stored anywhere.
+#   RELEASE_PUSH_TOKEN       Token allowed to push to main when branch protection blocks GITHUB_TOKEN.
+#   RELEASE_VARIABLES_TOKEN  Fine-grained PAT with "Variables: read and write" on this repo; when set,
+#                            RELEASE_MAJOR/MINOR/REVISION repository variables are mirrored after release.
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version part to increment
+        type: choice
+        options: [ patch, minor, major ]
+        default: patch
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  LIBRARY_PROJECT: NullFX.CRC/NullFX.CRC.csproj
+  TEST_PROJECT: NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
+  BENCHMARK_PROJECT: NullFX.CRC.Benchmarks/NullFX.CRC.Benchmarks.csproj
+
+jobs:
+  release:
+    name: Version, build, pack and publish
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write   # push the version commit, create tag + release
+      packages: write   # publish to GitHub Packages
+      id-token: write   # GitHub OIDC token for nuget.org Trusted Publishing
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Always release the tip of main (not the triggering SHA) so queued runs
+          # pick up the latest merged state and any earlier version bump.
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Increment version
+        id: version
+        shell: pwsh
+        run: ./.github/scripts/bump-version.ps1 -Bump '${{ inputs.bump || 'patch' }}'
+
+      - name: Commit version bump (local)
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          git add Directory.Build.props
+          git commit -m "release: v${{ steps.version.outputs.version }} [skip ci]"
+
+      - name: Restore
+        run: |
+          dotnet restore ${{ env.LIBRARY_PROJECT }}
+          dotnet restore ${{ env.TEST_PROJECT }}
+
+      - name: Build (all target frameworks)
+        run: >
+          dotnet build ${{ env.LIBRARY_PROJECT }} -c Release --no-restore
+          -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          -bl:artifacts/logs/release-build.binlog
+
+      # README.md and the package metadata carry no version placeholders (the version
+      # comes from MSBuild), so there is nothing to token-replace before packing.
+      - name: Pack
+        run: >
+          dotnet pack ${{ env.LIBRARY_PROJECT }} -c Release --no-build
+          -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          -o artifacts/package
+
+      - name: Verify package
+        shell: pwsh
+        run: ./.github/scripts/verify-package.ps1 -PackageDirectory artifacts/package -Version '${{ steps.version.outputs.version }}'
+
+      - name: Unit tests (net10.0)
+        run: >
+          dotnet test ${{ env.TEST_PROJECT }} -c Release --no-restore -f net10.0
+          -p:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory artifacts/test-results
+
+      - name: Benchmarks (net10.0, short run)
+        run: >
+          dotnet run --project ${{ env.BENCHMARK_PROJECT }} -c Release -f net10.0
+          --property:RELEASE_VERSION=${{ steps.version.outputs.version }}
+          -- --job short --exporters json github --artifacts artifacts/benchmarks
+
+      - name: Upload release artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-${{ steps.version.outputs.version || 'unknown' }}
+          path: |
+            artifacts/package/
+            artifacts/test-results/
+            artifacts/benchmarks/results/
+            artifacts/logs/
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Push version commit to main
+        if: steps.version.outputs.changed == 'true'
+        # Fails (and stops the release before anything is published) if main moved
+        # or branch protection rejects the push; re-running is safe.
+        run: git push origin HEAD:main
+
+      - name: Check publishing credentials
+        id: creds
+        shell: pwsh
+        env:
+          NUGET_USER: ${{ secrets.NUGET_USER }}
+          VARIABLES_TOKEN: ${{ secrets.RELEASE_VARIABLES_TOKEN }}
+        run: |
+          "nuget=$(-not [string]::IsNullOrEmpty($env:NUGET_USER))".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
+          "variables=$(-not [string]::IsNullOrEmpty($env:VARIABLES_TOKEN))".ToLowerInvariant() | Add-Content $env:GITHUB_OUTPUT
+
+      - name: Publish to GitHub Packages
+        shell: pwsh
+        env:
+          GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          dotnet nuget push "artifacts/package/NullFX.CRC.${{ steps.version.outputs.version }}.nupkg"
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          --api-key $env:GITHUB_PACKAGES_TOKEN --skip-duplicate --no-symbols
+
+      # Trusted Publishing: exchange this job's GitHub OIDC token for a short-lived
+      # (~1 hour) nuget.org API key immediately before pushing. Requires a Trusted
+      # Publishing policy on nuget.org for owner nullfx, repository NullFX.CRC and
+      # workflow file release.yml.
+      - name: NuGet login (OIDC -> temporary API key)
+        if: steps.creds.outputs.nuget == 'true'
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Publish to nuget.org
+        if: steps.creds.outputs.nuget == 'true'
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+        # The matching .snupkg symbols package is pushed automatically alongside.
+        run: >
+          dotnet nuget push "artifacts/package/NullFX.CRC.${{ steps.version.outputs.version }}.nupkg"
+          --source "https://api.nuget.org/v3/index.json"
+          --api-key $env:NUGET_API_KEY --skip-duplicate
+
+      - name: nuget.org publish skipped
+        if: steps.creds.outputs.nuget != 'true'
+        run: echo "::warning::NUGET_USER is not configured; skipped publishing to nuget.org (Trusted Publishing)."
+
+      - name: Create GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $tag = "v$env:VERSION"
+          $sha = git rev-parse HEAD
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) { Write-Host "Release $tag already exists; skipping."; exit 0 }
+          $notes = "NullFX.CRC $env:VERSION`n`nInstall: ``dotnet add package NullFX.CRC --version $env:VERSION``"
+          $files = Get-ChildItem artifacts/package -Include *.nupkg, *.snupkg -Recurse | ForEach-Object FullName
+          gh release create $tag @files --target $sha --title $tag --notes $notes --generate-notes
+          if ($LASTEXITCODE -ne 0) { throw "gh release create failed" }
+
+      - name: Mirror version to repository variables
+        if: steps.creds.outputs.variables == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_VARIABLES_TOKEN }}
+        run: |
+          gh variable set RELEASE_MAJOR    --body '${{ steps.version.outputs.major }}'    --repo '${{ github.repository }}'
+          gh variable set RELEASE_MINOR    --body '${{ steps.version.outputs.minor }}'    --repo '${{ github.repository }}'
+          gh variable set RELEASE_REVISION --body '${{ steps.version.outputs.revision }}' --repo '${{ github.repository }}'
+
+      - name: Release summary
+        if: always()
+        shell: pwsh
+        run: |
+          @(
+            "### Release v${{ steps.version.outputs.version }}",
+            "",
+            "| | |", "|---|---|",
+            "| Previous version | ``${{ steps.version.outputs.previous }}`` |",
+            "| Released version | ``${{ steps.version.outputs.version }}`` |",
+            "| Version incremented | ${{ steps.version.outputs.changed }} |",
+            "| nuget.org publish | $(if ('${{ steps.creds.outputs.nuget }}' -eq 'true') { 'enabled (Trusted Publishing)' } else { 'skipped (no NUGET_USER)' }) |"
+          ) -join "`n" | Add-Content $env:GITHUB_STEP_SUMMARY

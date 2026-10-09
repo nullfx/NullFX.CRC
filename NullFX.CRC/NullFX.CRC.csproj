@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net40;net45;net46;net47;net48;netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netcoreapp3.1;net40;net45;net46;net47;net48;net6.0;net7.0;net8.0;net10.0</TargetFrameworks>
 		<AssemblyName>NullFX.CRC</AssemblyName>
 		<Description>NullFX CRC is a small set of CRC utilities (crc8, crc16, and crc32) written in C# and released under the MIT License</Description>
 		<Copyright>2023 Steve Whitley</Copyright>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Authors>Steve Whitley</Authors>
 		<Company>NullFX Software</Company>
 		<PackageTags>CRC8 CRC16 CRC32</PackageTags>
@@ -20,13 +20,15 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Configurations>Release;Debug</Configurations>
-		<SonarQubeTestProject>True</SonarQubeTestProject>
-		<!--when manually building this, replace #{RELEASE_VERSION}# with some .net version number like	1.1.1-->
-		<PackageVersion>#{RELEASE_VERSION}#</PackageVersion>
-		<AssemblyVersion>#{RELEASE_VERSION}#.0</AssemblyVersion>
-		<FileVersion>#{RELEASE_VERSION}#.0</FileVersion>
-		<Version>#{RELEASE_VERSION}#</Version>
-		<ReleaseVersion>#{RELEASE_VERSION}#</ReleaseVersion>
+		<!-- Deterministic, SourceLink-friendly paths when built by GitHub Actions. -->
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+		<!--
+			Version properties (Version, PackageVersion, AssemblyVersion, FileVersion,
+			InformationalVersion) are computed from RELEASE_MAJOR/RELEASE_MINOR/RELEASE_REVISION
+			in ../Directory.Build.props. Override with -p:RELEASE_VERSION=x.y.z when needed.
+		-->
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>
@@ -38,9 +40,7 @@
 		<DefineConstants>TRACE;DEBUG;NET;NETCOREAPP</DefineConstants>
 		<DefineConstants>TRACE;DEBUG;NET;NETCOREAPP</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="*" PrivateAssets="All" />
-	</ItemGroup>
+	<!-- SourceLink for GitHub is built into the .NET 8+ SDK, so no package reference is needed. -->
 	<ItemGroup>
 		<Folder Include="Properties\" />
 	</ItemGroup>

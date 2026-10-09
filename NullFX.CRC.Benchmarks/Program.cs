@@ -6,7 +6,10 @@ namespace NullFX.CRC.Benchmarks
 	{
 		static void Main(string[] args)
 		{
-			BenchmarkRunner.Run<HashGenerationBenchmark>();
+			// Forward command-line arguments so CI can pick the job, exporters and
+			// artifacts path (e.g. --job short --exporters json github). With no
+			// arguments this behaves exactly as before.
+			BenchmarkRunner.Run<HashGenerationBenchmark>(args: args);
 		}
 	}
 }

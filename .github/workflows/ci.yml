@@ -1,0 +1,194 @@
+# Pull request / main validation: build every target framework, run unit tests,
+# run a short benchmark pass and pack an inspection-only 0.0.0 NuGet package.
+# This workflow never changes the version and never publishes anything.
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Non-release builds are always versioned 0.0.0; only release.yml sets a real version.
+  CI_VERSION: 0.0.0
+  LIBRARY_PROJECT: NullFX.CRC/NullFX.CRC.csproj
+  TEST_PROJECT: NullFX.CRC.Tests/NullFX.CRC.Tests.csproj
+  BENCHMARK_PROJECT: NullFX.CRC.Benchmarks/NullFX.CRC.Benchmarks.csproj
+
+jobs:
+  build:
+    name: Build (all target frameworks)
+    # Windows is required for the .NET Framework (net40-net48) targets.
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v5
+        with:
+          # The .NET 10 SDK builds every target (netcoreapp3.1/net6.0/net7.0 and
+          # net4x reference packs are restored from NuGet). .NET 8 is installed
+          # as the fallback runtime.
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Show SDKs
+        run: dotnet --info
+
+      - name: Restore
+        run: dotnet restore ${{ env.LIBRARY_PROJECT }}
+
+      - name: Build
+        run: >
+          dotnet build ${{ env.LIBRARY_PROJECT }} -c Release --no-restore
+          -p:RELEASE_VERSION=${{ env.CI_VERSION }}
+          -bl:artifacts/logs/build.binlog
+
+      - name: Verify every target framework was built
+        shell: pwsh
+        run: |
+          $tfms = (dotnet msbuild $env:LIBRARY_PROJECT -getProperty:TargetFrameworks | Out-String).Trim().Split(';')
+          $missing = $tfms | Where-Object { -not (Test-Path "NullFX.CRC/bin/Release/$_/NullFX.CRC.dll") }
+          "| Target framework | Built |`n|---|---|" | Add-Content $env:GITHUB_STEP_SUMMARY
+          foreach ($t in $tfms) { "| $t | $(if ($missing -contains $t) { 'no' } else { 'yes' }) |" | Add-Content $env:GITHUB_STEP_SUMMARY }
+          if ($missing) { throw "Missing build output for: $($missing -join ', ')" }
+
+      - name: Pack (inspection only, version ${{ env.CI_VERSION }})
+        run: >
+          dotnet pack ${{ env.LIBRARY_PROJECT }} -c Release --no-build
+          -p:RELEASE_VERSION=${{ env.CI_VERSION }}
+          -o artifacts/package
+
+      - name: Verify package
+        shell: pwsh
+        run: ./.github/scripts/verify-package.ps1 -PackageDirectory artifacts/package -Version $env:CI_VERSION
+
+      - name: Upload package
+        uses: actions/upload-artifact@v6
+        with:
+          name: nuget-package-pr
+          path: artifacts/package/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-logs
+          path: artifacts/logs/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  test:
+    name: Unit tests (net10.0)
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore ${{ env.TEST_PROJECT }}
+
+      - name: Build
+        run: dotnet build ${{ env.TEST_PROJECT }} -c Release --no-restore -p:RELEASE_VERSION=${{ env.CI_VERSION }}
+
+      - name: Test
+        run: >
+          dotnet test ${{ env.TEST_PROJECT }} -c Release --no-build -f net10.0
+          --logger "trx;LogFileName=test-results.trx"
+          --logger "console;verbosity=normal"
+          --results-directory artifacts/test-results
+
+      - name: Publish test summary
+        if: always()
+        shell: pwsh
+        run: |
+          $trx = Get-ChildItem artifacts/test-results -Filter *.trx -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $trx) { "### Unit tests`nNo TRX results were produced." | Add-Content $env:GITHUB_STEP_SUMMARY; exit 0 }
+          [xml] $x = Get-Content $trx.FullName
+          $c = $x.TestRun.ResultSummary.Counters
+          $lines = @(
+            '### Unit tests (net10.0)', '',
+            '| Outcome | Total | Passed | Failed | Skipped |', '|---|---|---|---|---|',
+            "| $($x.TestRun.ResultSummary.outcome) | $($c.total) | $($c.passed) | $($c.failed) | $([int]$c.notExecuted) |"
+          )
+          $failed = $x.TestRun.Results.UnitTestResult | Where-Object { $_.outcome -eq 'Failed' }
+          if ($failed) { $lines += '', '**Failed tests**', ''; $lines += $failed | ForEach-Object { "- ``$($_.testName)``" } }
+          $lines -join "`n" | Add-Content $env:GITHUB_STEP_SUMMARY
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results
+          path: artifacts/test-results/
+          if-no-files-found: warn
+          retention-days: 14
+
+  benchmark:
+    name: Benchmarks (net10.0, short run)
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Run benchmarks
+        # A ShortRun job keeps PR feedback fast (full statistical runs are not
+        # meaningful on shared CI runners anyway). Results are relative
+        # NullFX vs. System.Data.HashFunction numbers, not absolute timings.
+        run: >
+          dotnet run --project ${{ env.BENCHMARK_PROJECT }} -c Release -f net10.0
+          --property:RELEASE_VERSION=${{ env.CI_VERSION }}
+          -- --job short --exporters json github --artifacts artifacts/benchmarks
+
+      - name: Publish benchmark summary
+        if: always()
+        shell: pwsh
+        run: |
+          $reports = Get-ChildItem artifacts/benchmarks/results -Filter *-report-github.md -ErrorAction SilentlyContinue
+          if (-not $reports) { "### Benchmarks`nNo benchmark report was produced." | Add-Content $env:GITHUB_STEP_SUMMARY; exit 0 }
+          "### Benchmarks (net10.0, ShortRun)`n" | Add-Content $env:GITHUB_STEP_SUMMARY
+          $reports | ForEach-Object { Get-Content $_.FullName -Raw | Add-Content $env:GITHUB_STEP_SUMMARY }
+
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-results
+          path: artifacts/benchmarks/
+          if-no-files-found: warn
+          retention-days: 30

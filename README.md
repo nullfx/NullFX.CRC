@@ -1,4 +1,4 @@
-﻿# NullFX CRC [![build](https://github.com/nullfx/NullFX.CRC/actions/workflows/cicd-actions.yml/badge.svg)](https://github.com/nullfx/NullFX.CRC/actions/workflows/cicd-actions.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nullfx_NullFX.CRC&metric=alert_status)](https://sonarcloud.io/dashboard?id=nullfx_NullFX.CRC)
+﻿# NullFX CRC [![CI](https://github.com/nullfx/NullFX.CRC/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nullfx/NullFX.CRC/actions/workflows/ci.yml) [![CodeQL](https://github.com/nullfx/NullFX.CRC/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/nullfx/NullFX.CRC/actions/workflows/codeql.yml) [![NuGet](https://img.shields.io/nuget/v/NullFX.CRC.svg)](https://www.nuget.org/packages/NullFX.CRC)
 
 NullFX CRC is a small set of CRC utilities written in native C# released under the MIT License
 
@@ -11,8 +11,12 @@ NullFX CRC is a small set of CRC utilities written in native C# released under t
 ## Install
 
 ```sh
-dotnet add PROJECT package NullFX.CRC --version 1.1.10
+dotnet add package NullFX.CRC
 ```
+
+Run this from the folder that contains your project file (or add the project path after `dotnet add`). The latest released version is installed; the NuGet badge above shows the current version.
+
+Supported target frameworks: `netstandard2.0`, `netcoreapp3.1`, `net40`, `net45`, `net46`, `net47`, `net48`, `net6.0`, `net7.0`, `net8.0` and `net10.0`.
 
 ## Examples:
 

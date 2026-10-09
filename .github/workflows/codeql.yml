@@ -1,0 +1,59 @@
+# GitHub-native code scanning for C#/.NET (replaces SonarCloud).
+# Results appear under Security > Code scanning and as a PR check.
+name: CodeQL
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '30 6 * * 1'   # weekly, Monday 06:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  analyze:
+    name: Analyze (C#)
+    # Windows so the .NET Framework targets compile exactly as in CI.
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: csharp
+          build-mode: manual
+          queries: security-and-quality
+
+      - name: Build library (all target frameworks)
+        # Only the shipped library is analyzed; tests and benchmarks are not built.
+        run: dotnet build NullFX.CRC/NullFX.CRC.csproj -c Release -p:RELEASE_VERSION=0.0.0 -p:UseSharedCompilation=false
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:csharp
