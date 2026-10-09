@@ -31,8 +31,9 @@
 		<AssemblyOriginatorKeyFile>NullFX.CRC.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>
-		</DebugType>
+		<!-- Must be portable: nuget.org rejects .snupkg files containing Windows (full) PDBs.
+		     An empty DebugType makes the compiler fall back to 'full' on Windows. -->
+		<DebugType>portable</DebugType>
 		<WarningLevel>4</WarningLevel>
 		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
