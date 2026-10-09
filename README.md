@@ -98,4 +98,37 @@ and
 
 # Benchmarks
 
-_Benchmark results are published here automatically by the release workflow._
+_BenchmarkDotNet ShortRun results from the release build for v1.1.14 on a GitHub-hosted runner. Absolute timings vary between runs and machines; compare rows within a table._
+
+```
+
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26100.33438/24H2/2024Update/HudsonValley) (Hyper-V)
+AMD EPYC 9V45 2.60GHz, 1 CPU, 4 logical and 2 physical cores
+.NET SDK 10.0.401
+  [Host]   : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
+  ShortRun : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
+
+Job=ShortRun  IterationCount=3  LaunchCount=1  
+WarmupCount=3  
+
+```
+| Method                | ArraySize | Mean         | Error        | StdDev      |
+|---------------------- |---------- |-------------:|-------------:|------------:|
+| **NullFxCrc8**            | **10**        |     **4.763 ns** |     **1.911 ns** |   **0.1048 ns** |
+| NullFxCrc16           | 10        |     9.130 ns |     2.859 ns |   0.1567 ns |
+| NullFxCrc32           | 10        |     8.008 ns |     6.848 ns |   0.3754 ns |
+| DataHashFunctionCrc8  | 10        |    43.019 ns |     4.723 ns |   0.2589 ns |
+| DataHashFunctionCrc16 | 10        |    57.736 ns |    38.380 ns |   2.1037 ns |
+| DataHashFunctionCrc32 | 10        |    62.859 ns |    56.031 ns |   3.0712 ns |
+| **NullFxCrc8**            | **100**       |    **98.583 ns** |    **12.475 ns** |   **0.6838 ns** |
+| NullFxCrc16           | 100       |   203.283 ns |    34.054 ns |   1.8666 ns |
+| NullFxCrc32           | 100       |   166.539 ns |    47.917 ns |   2.6265 ns |
+| DataHashFunctionCrc8  | 100       |   244.388 ns |     3.814 ns |   0.2091 ns |
+| DataHashFunctionCrc16 | 100       |   366.275 ns |    15.016 ns |   0.8231 ns |
+| DataHashFunctionCrc32 | 100       |   377.354 ns |   250.059 ns |  13.7066 ns |
+| **NullFxCrc8**            | **1000**      | **1,399.143 ns** |   **310.423 ns** |  **17.0153 ns** |
+| NullFxCrc16           | 1000      | 2,032.177 ns |   335.809 ns |  18.4068 ns |
+| NullFxCrc32           | 1000      | 1,804.730 ns |   429.986 ns |  23.5690 ns |
+| DataHashFunctionCrc8  | 1000      | 2,357.015 ns | 3,789.983 ns | 207.7418 ns |
+| DataHashFunctionCrc16 | 1000      | 3,414.401 ns | 1,816.789 ns |  99.5843 ns |
+| DataHashFunctionCrc32 | 1000      | 3,399.439 ns |   378.077 ns |  20.7237 ns |
