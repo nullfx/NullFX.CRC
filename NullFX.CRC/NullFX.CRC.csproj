@@ -40,9 +40,7 @@
 		<DefineConstants>TRACE;DEBUG;NET;NETCOREAPP</DefineConstants>
 		<DefineConstants>TRACE;DEBUG;NET;NETCOREAPP</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="*" PrivateAssets="All" />
-	</ItemGroup>
+	<!-- SourceLink for GitHub is built into the .NET 8+ SDK, so no package reference is needed. -->
 	<ItemGroup>
 		<Folder Include="Properties\" />
 	</ItemGroup>
